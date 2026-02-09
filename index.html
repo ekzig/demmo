@@ -1428,11 +1428,8 @@
     </nav>
 
     <!-- Hero -->
-    <section class="hero-section pt-36 pb-28 px-6">
+    <section class="hero-section pt-36 pb-28 px-6" id="hero-bg">
         <div class="hero-glow glow-1"></div>
-        <div class="hero-glow glow-2"></div>
-        <div class="hero-glow glow-3"></div>
-        <div class="hero-grid"></div>
         
         <!-- Floating demo cards with quick actions -->
         <div class="demo-card hidden lg:flex" style="top: 18%; left: 4%; animation-delay: 0s; --accent: var(--gold); --glow: var(--gold-glow); --art-from: #fcd34d; --art-to: #f59e0b;">
@@ -2105,5 +2102,32 @@
         </div>
     </footer>
 
+    <!-- Vanta Halo -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.halo.min.js"></script>
+    <script>
+        if (window.VANTA) {
+            VANTA.HALO({
+                el: "#hero-bg",
+                mouseControls: true,
+                touchControls: true,
+                gyroControls: false,
+                minHeight: 200,
+                minWidth: 200,
+                baseColor: 0x07070a,
+                backgroundColor: 0x07070a,
+                amplitudeFactor: 0.8,
+                size: 1.2,
+                xOffset: 0.0,
+                yOffset: 0.05
+            });
+
+            // Tone it down — Vanta canvas sits behind everything
+            const canvas = document.querySelector('#hero-bg canvas');
+            if (canvas) {
+                canvas.style.opacity = '0.35';
+            }
+        }
+    </script>
 </body>
 </html>
