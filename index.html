@@ -53,6 +53,17 @@
             position: relative;
             min-height: 100vh;
             background: #07070a;
+            overflow: hidden;
+        }
+
+        /* Force Vanta canvas behind everything */
+        .hero-section canvas {
+            position: absolute !important;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0 !important;
+            pointer-events: none !important;
+            opacity: 0.2 !important;
         }
         
         .hero-glow {
@@ -2116,16 +2127,23 @@
                 minWidth: 200,
                 baseColor: 0x07070a,
                 backgroundColor: 0x07070a,
-                amplitudeFactor: 0.8,
-                size: 1.2,
+                amplitudeFactor: 0.5,
+                size: 1.0,
                 xOffset: 0.0,
                 yOffset: 0.05
             });
 
-            // Tone it down — Vanta canvas sits behind everything
+            // Force the canvas behind all content
             const canvas = document.querySelector('#hero-bg canvas');
             if (canvas) {
-                canvas.style.opacity = '0.35';
+                canvas.style.position = 'absolute';
+                canvas.style.top = '0';
+                canvas.style.left = '0';
+                canvas.style.width = '100%';
+                canvas.style.height = '100%';
+                canvas.style.zIndex = '0';
+                canvas.style.pointerEvents = 'none';
+                canvas.style.opacity = '0.2';
             }
         }
     </script>
