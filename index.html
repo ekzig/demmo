@@ -56,8 +56,21 @@
         }
         
         .hero-glow {
-            display: none;
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
         }
+
+        /* Single soft wash behind the headline — no animation, no drift */
+        .glow-1 {
+            width: 700px; height: 400px;
+            background: radial-gradient(ellipse, rgba(231, 162, 200, 0.1) 0%, transparent 70%);
+            top: 15%; left: 50%; transform: translateX(-50%);
+            filter: blur(100px);
+        }
+
+        /* Hide the other two — we only need one */
+        .glow-2, .glow-3 { display: none; }
         
         .hero-grid {
             display: none;
@@ -69,7 +82,10 @@
         }
         
         .headline-gradient {
-            color: #fff;
+            background: linear-gradient(180deg, #ffffff 30%, rgba(255, 255, 255, 0.7) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             line-height: 1.2 !important;
         }
         
@@ -794,6 +810,7 @@
         .feature-card:hover {
             background: rgba(255, 255, 255, 0.025);
             border-color: rgba(255, 255, 255, 0.08);
+            transform: translateY(-2px);
         }
         
         .feature-card:nth-child(1) { --accent: var(--sky); --glow: var(--sky-glow); }
@@ -981,11 +998,12 @@
         .pricing-card.featured {
             --card-accent: var(--pink-primary);
             border-color: rgba(231, 162, 200, 0.2);
-            background: linear-gradient(135deg, rgba(231, 162, 200, 0.03) 0%, rgba(255, 255, 255, 0.015) 100%);
+            border-top: 2px solid rgba(231, 162, 200, 0.4);
+            background: rgba(231, 162, 200, 0.02);
         }
-        
+
         .pricing-card.featured::before {
-            opacity: 1;
+            display: none;
         }
         
         .pricing-card.featured:hover {
@@ -1369,6 +1387,19 @@
         .cta-link:hover .arrow-icon { transform: translateX(5px); }
         
         .arrow-icon { transition: transform 0.3s ease; }
+
+        /* ===== NAV SCROLL STATE ===== */
+        nav {
+            transition: background 0.3s ease, backdrop-filter 0.3s ease, border-color 0.3s ease;
+            border-bottom: 1px solid transparent;
+        }
+
+        nav.scrolled {
+            background: rgba(7, 7, 10, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom-color: rgba(255, 255, 255, 0.04);
+        }
     </style>
 </head>
 <body>
@@ -2002,6 +2033,12 @@
                 });
             }
         });
+
+        // ===== NAV SCROLL BLUR =====
+        const nav = document.querySelector('nav');
+        window.addEventListener('scroll', () => {
+            nav.classList.toggle('scrolled', window.scrollY > 40);
+        }, { passive: true });
     </script>
 
     <!-- FAQ Section -->
