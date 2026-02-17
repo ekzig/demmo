@@ -1794,8 +1794,23 @@
             };
         }
 
+        // Generate fallback peaks (seeded random, looks organic)
+        let _wfSeed = 1;
+        function generateFallbackPeaks(numBars, trackId) {
+            _wfSeed = (trackId || 1) * 9301 + 49297;
+            function rand() { _wfSeed = (_wfSeed * 9301 + 49297) % 233280; return _wfSeed / 233280; }
+            const peaks = new Float32Array(numBars);
+            for (let i = 0; i < numBars; i++) {
+                const base = 0.15 + rand() * 0.85;
+                const env = Math.sin((i / numBars) * Math.PI) * 0.4 + 0.6;
+                peaks[i] = Math.max(0.08, base * env);
+            }
+            return peaks;
+        }
+
         async function decodeAudioPeaks(audioUrl, numBars) {
             const resp = await fetch(audioUrl);
+            if (!resp.ok) throw new Error(`Fetch failed: ${resp.status}`);
             const arrayBuf = await resp.arrayBuffer();
             const audioBuf = await audioCtx.decodeAudioData(arrayBuf);
             const rawData = audioBuf.getChannelData(0); // mono or left channel
@@ -1884,24 +1899,26 @@
             const t = tracks.find(tr => tr.id === trackId);
             if (!t) return;
 
-            const numBarBottom = 200;
-            const numBarHero = 300;
-
-            // Use cached if available
-            const cacheKey = t.audio;
-            if (!waveformDataCache[cacheKey]) {
-                // Decode at higher resolution, downsample for each
-                waveformDataCache[cacheKey] = await decodeAudioPeaks(t.audio, 400);
-            }
-            const fullPeaks = waveformDataCache[cacheKey];
-
-            // Downsample for bottom bar
-            currentPeaks = downsamplePeaks(fullPeaks, numBarBottom);
-            // Downsample for hero
-            currentHeroPeaks = downsamplePeaks(fullPeaks, numBarHero);
-
-            // Initial draw
+            // Show generated fallback immediately so something is always visible
+            currentPeaks = generateFallbackPeaks(200, trackId);
+            currentHeroPeaks = generateFallbackPeaks(300, trackId);
             redrawWaveforms();
+
+            // Then try to decode real audio data and upgrade
+            try {
+                if (audioCtx.state === 'suspended') await audioCtx.resume();
+                const cacheKey = t.audio;
+                if (!waveformDataCache[cacheKey]) {
+                    waveformDataCache[cacheKey] = await decodeAudioPeaks(t.audio, 400);
+                }
+                const fullPeaks = waveformDataCache[cacheKey];
+                currentPeaks = downsamplePeaks(fullPeaks, 200);
+                currentHeroPeaks = downsamplePeaks(fullPeaks, 300);
+                redrawWaveforms();
+            } catch (e) {
+                // Fallback already showing, just log
+                console.warn('Waveform decode failed, using fallback:', e.message);
+            }
         }
 
         function downsamplePeaks(source, target) {
