@@ -10,10 +10,10 @@
     <link rel="stylesheet" href="https://use.typekit.net/zaw6kbv.css">
     <style>
         :root {
-            --bg-primary: #080808;
-            --bg-secondary: #0c0c0c;
-            --bg-tertiary: #111111;
-            --bg-hover: #161616;
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #0e0e15;
+            --bg-tertiary: #13131c;
+            --bg-hover: #181824;
             --border: rgba(255, 255, 255, 0.06);
             --border-hover: rgba(255, 255, 255, 0.1);
             --text-primary: #ffffff;
@@ -109,79 +109,6 @@
             gap: 5px;
         }
 
-        /* Imprint selector */
-        .imprint-selector {
-            padding: 8px 10px;
-            border-bottom: 1px solid var(--border);
-            position: relative;
-            flex-shrink: 0;
-        }
-
-        .imprint-selector-btn {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 6px;
-            padding: 7px 10px;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            background: var(--bg-tertiary);
-            color: var(--text-primary);
-            font-size: 12px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.15s ease;
-        }
-
-        .imprint-selector-btn:hover {
-            border-color: var(--border-hover);
-            background: var(--bg-hover);
-        }
-
-        .imprint-current {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-
-        .imprint-dropdown {
-            display: none;
-            position: absolute;
-            top: calc(100% + 2px);
-            left: 10px;
-            right: 10px;
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-hover);
-            border-radius: 10px;
-            padding: 4px;
-            z-index: 100;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
-        }
-
-        .imprint-dropdown.open {
-            display: block;
-        }
-
-        .imprint-option {
-            padding: 7px 10px;
-            border-radius: 6px;
-            font-size: 12px;
-            color: var(--text-secondary);
-            cursor: pointer;
-            transition: all 0.1s ease;
-        }
-
-        .imprint-option:hover {
-            background: var(--bg-hover);
-            color: var(--text-primary);
-        }
-
-        .imprint-option.active {
-            color: var(--pink);
-            background: var(--pink-glow);
-        }
-
         .sidebar-nav {
             flex: 1;
             padding: 12px 8px;
@@ -189,6 +116,7 @@
         }
 
         .nav-section-label {
+            font-family: 'JetBrains Mono', monospace;
             font-size: 9px;
             font-weight: 500;
             letter-spacing: 0.12em;
@@ -342,6 +270,7 @@
         }
 
         .page-count {
+            font-family: 'JetBrains Mono', monospace;
             font-size: 11px;
             color: var(--text-tertiary);
         }
@@ -507,32 +436,28 @@
 
         .progress-track {
             flex: 1;
-            height: 32px;
-            display: flex;
-            align-items: flex-end;
-            gap: 1.5px;
+            height: 3px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 2px;
+            overflow: hidden;
             cursor: pointer;
-            position: relative;
+            transition: height 0.1s ease;
         }
 
-        .waveform-bar {
-            flex: 1;
-            min-width: 0;
-            border-radius: 1px;
-            transition: background 0.05s ease;
-            background: rgba(255, 255, 255, 0.10);
+        .progress-track:hover {
+            height: 4px;
         }
 
-        .waveform-bar.played {
+        .progress-fill {
+            width: 35%;
+            height: 100%;
             background: var(--pink);
+            border-radius: 2px;
+            transition: width 0.1s linear;
         }
 
-        .progress-track:hover .waveform-bar.played {
+        .progress-track:hover .progress-fill {
             background: var(--pink-light);
-        }
-
-        .progress-track:hover .waveform-bar:not(.played) {
-            background: rgba(255, 255, 255, 0.15);
         }
 
         /* RIGHT: volume + shortcuts */
@@ -566,98 +491,6 @@
             border-radius: 2px;
         }
 
-        /* ===== NOW PLAYING HERO ===== */
-        .np-hero {
-            display: none;
-            border-bottom: 1px solid var(--border);
-            background: var(--bg-secondary);
-            flex-shrink: 0;
-            overflow: hidden;
-            transition: all 0.25s ease;
-        }
-
-        .np-hero.visible {
-            display: block;
-        }
-
-        .np-hero-inner {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            padding: 20px 28px;
-        }
-
-        .np-hero-artwork {
-            width: 100px;
-            height: 100px;
-            border-radius: 10px;
-            overflow: hidden;
-            flex-shrink: 0;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.4);
-        }
-
-        .np-hero-artwork img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .np-hero-content {
-            flex: 1;
-            min-width: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-        }
-
-        .np-hero-text {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-
-        .np-hero-track {
-            font-size: 18px;
-            font-weight: 600;
-            letter-spacing: -0.02em;
-            color: var(--text-primary);
-        }
-
-        .np-hero-artist {
-            font-size: 13px;
-            color: var(--text-secondary);
-        }
-
-        .np-hero-waveform {
-            display: flex;
-            align-items: flex-end;
-            gap: 2px;
-            height: 48px;
-            cursor: pointer;
-        }
-
-        .np-hero-waveform .waveform-bar {
-            flex: 1;
-            min-width: 0;
-            border-radius: 1.5px;
-            background: rgba(255, 255, 255, 0.08);
-            transition: background 0.05s ease;
-        }
-
-        .np-hero-waveform .waveform-bar.played {
-            background: var(--pink);
-        }
-
-        .np-hero-waveform:hover .waveform-bar.played {
-            background: var(--pink-light);
-        }
-
-        .np-hero-waveform:hover .waveform-bar:not(.played) {
-            background: rgba(255, 255, 255, 0.12);
-        }
-
         /* ===== TRACK LIST ===== */
         .track-list-container {
             flex: 1;
@@ -667,7 +500,7 @@
 
         .track-list-header {
             display: grid;
-            grid-template-columns: 1fr 110px 100px 110px 100px 160px;
+            grid-template-columns: 1fr 110px 100px 100px 160px;
             gap: 12px;
             align-items: center;
             padding: 10px 28px;
@@ -676,12 +509,10 @@
             top: 0;
             background: var(--bg-primary);
             z-index: 5;
-            max-width: 1200px;
-            margin: 0 auto;
-            width: 100%;
         }
 
         .col-header {
+            font-family: 'JetBrains Mono', monospace;
             font-size: 9px;
             font-weight: 500;
             letter-spacing: 0.1em;
@@ -707,7 +538,7 @@
         /* ===== TRACK ROW ===== */
         .track-row {
             display: grid;
-            grid-template-columns: 1fr 110px 100px 110px 100px 160px;
+            grid-template-columns: 1fr 110px 100px 100px 160px;
             gap: 12px;
             align-items: center;
             padding: 12px 28px;
@@ -715,9 +546,6 @@
             cursor: pointer;
             transition: all 0.15s ease;
             position: relative;
-            max-width: 1200px;
-            margin: 0 auto;
-            width: 100%;
         }
 
         .track-row::after {
@@ -869,6 +697,7 @@
         }
 
         .popularity-count {
+            font-family: 'JetBrains Mono', monospace;
             font-size: 12px;
             font-weight: 500;
             color: var(--text-primary);
@@ -891,6 +720,7 @@
 
         /* Genre tag */
         .genre-tag {
+            font-family: 'JetBrains Mono', monospace;
             font-size: 10px;
             font-weight: 500;
             padding: 4px 10px;
@@ -931,17 +761,9 @@
             border: 1px solid var(--peach-border);
         }
 
-        /* Imprint */
-        .track-imprint {
-            font-size: 11px;
-            color: var(--text-secondary);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
         /* Date */
         .track-date {
+            font-family: 'JetBrains Mono', monospace;
             font-size: 11px;
             color: var(--text-tertiary);
         }
@@ -1386,6 +1208,7 @@
         }
 
         .artist-stat-value {
+            font-family: 'JetBrains Mono', monospace;
             font-size: 14px;
             font-weight: 500;
             color: var(--text-primary);
@@ -1498,21 +1321,9 @@
         <aside class="sidebar">
             <div class="sidebar-header">
                 <img src="demmo-logo-2026-v2.svg" alt="demmo" class="sidebar-logo">
-                <span class="sidebar-badge">FOR LABELS</span>
-            </div>
-            <div class="imprint-selector" id="imprintSelector">
-                <button class="imprint-selector-btn" id="imprintBtn">
-                    <span class="imprint-current" id="imprintCurrent">Enhanced Music</span>
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:12px;height:12px;opacity:0.5;flex-shrink:0"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                </button>
-                <div class="imprint-dropdown" id="imprintDropdown">
-                    <div class="imprint-option active" data-imprint="all">All Imprints</div>
-                    <div class="imprint-option" data-imprint="colorize">Colorize</div>
-                    <div class="imprint-option" data-imprint="enhanced-chill">Enhanced Chill</div>
-                    <div class="imprint-option" data-imprint="enhanced-progressive">Enhanced Progressive</div>
-                    <div class="imprint-option" data-imprint="enhanced-recordings">Enhanced Recordings</div>
-                    <div class="imprint-option" data-imprint="shapes-of-solitude">Shapes of Solitude</div>
-                </div>
+                <span class="sidebar-badge">FOR LABELS
+                    <svg style="width:10px;height:10px;opacity:0.5;flex-shrink:0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                </span>
             </div>
 
             <nav class="sidebar-nav">
@@ -1521,16 +1332,8 @@
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"/></svg>
                     Dashboard
                 </div>
-                <div class="nav-item">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5"/></svg>
-                    Onboarding
-                </div>
 
                 <div class="nav-section-label">Submissions</div>
-                <div class="nav-item">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 010 3.75H5.625a1.875 1.875 0 010-3.75z"/></svg>
-                    Queue
-                </div>
                 <div class="nav-item active">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.25 13.5h3.86a2.25 2.25 0 012.012 1.244l.256.512a2.25 2.25 0 002.013 1.244h3.218a2.25 2.25 0 002.013-1.244l.256-.512a2.25 2.25 0 012.013-1.244h3.859m-19.5.338V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18v-4.162c0-.224-.034-.447-.1-.661L19.24 5.338a2.25 2.25 0 00-2.15-1.588H6.911a2.25 2.25 0 00-2.15 1.588L2.35 13.177a2.25 2.25 0 00-.1.661z"/></svg>
                     My Assignments
@@ -1602,22 +1405,6 @@
                 </div>
             </div>
 
-            <!-- Now Playing Hero -->
-            <div class="np-hero" id="npHero">
-                <div class="np-hero-inner">
-                    <div class="np-hero-artwork">
-                        <img id="npHeroArt" src="Avatars/demmo-avatar-x1.webp" alt="">
-                    </div>
-                    <div class="np-hero-content">
-                        <div class="np-hero-text">
-                            <div class="np-hero-track" id="npHeroTrack">Track Name</div>
-                            <div class="np-hero-artist" id="npHeroArtist">Artist Name</div>
-                        </div>
-                        <div class="np-hero-waveform" id="npHeroWaveform"></div>
-                    </div>
-                </div>
-            </div>
-
             <!-- Track list -->
             <div class="track-list-header">
                 <div class="col-header">
@@ -1626,7 +1413,6 @@
                 </div>
                 <div class="col-header">Popularity</div>
                 <div class="col-header">Genre</div>
-                <div class="col-header">Imprint</div>
                 <div class="col-header">
                     Submitted
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/></svg>
@@ -1679,7 +1465,9 @@
             </div>
             <div class="np-progress">
                 <span class="np-time np-time-current mono">0:00</span>
-                <div class="progress-track" id="progressTrack"></div>
+                <div class="progress-track" id="progressTrack">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
                 <span class="np-time np-time-total mono">0:00</span>
             </div>
         </div>
@@ -1786,13 +1574,13 @@
     <script>
         // ===== DEMO DATA =====
         const tracks = [
-            { id: 1, status: 'new', track: 'Velvet Static', artist: 'Luna Ray', genre: 'Electronic', genreClass: 'genre-electronic', imprint: 'Colorize', date: 'Today', avatar: 'Avatars/demmo-avatar-x1.webp', audio: 'audio/run-marc-v-remix.mp3', priority: true, submissions: 3, accepted: 1, firstSub: 'Jan 2026', lastSub: 'Feb 2026', followers: 84500, socials: { spotify: 'https://open.spotify.com/artist/lunaray', instagram: 'https://instagram.com/lunaraymusic', youtube: 'https://youtube.com/@lunaray', soundcloud: 'https://soundcloud.com/lunaray' } },
-            { id: 2, status: 'new', track: 'Slow Burn (Demo)', artist: 'NVDES', genre: 'Indie', genreClass: 'genre-indie', imprint: 'Enhanced Chill', date: 'Today', avatar: 'Avatars/demmo-avatar-x2.webp', audio: 'audio/momentum-extended-mix.mp3', priority: false, submissions: 1, accepted: 0, firstSub: 'Feb 2026', lastSub: 'Feb 2026', followers: 259000, socials: { spotify: 'https://open.spotify.com/artist/nvdes', instagram: 'https://instagram.com/nvdes', youtube: 'https://youtube.com/@nvdes', soundcloud: 'https://soundcloud.com/nvdes' } },
-            { id: 3, status: 'new', track: 'Glass Hours', artist: 'Pale Waves', genre: 'Pop', genreClass: 'genre-pop', imprint: 'Enhanced Recordings', date: 'Yesterday', avatar: 'Avatars/demmo-avatar-x3.webp', audio: 'audio/chords-of-serenity.mp3', priority: false, submissions: 5, accepted: 2, firstSub: 'Nov 2025', lastSub: 'Feb 2026', followers: 1240000, socials: { spotify: 'https://open.spotify.com/artist/palewaves', instagram: 'https://instagram.com/palewaves', youtube: 'https://youtube.com/@palewaves', soundcloud: 'https://soundcloud.com/palewaves' } },
-            { id: 4, status: 'new', track: 'Neon Undertow', artist: 'Soft Launch', genre: 'Electronic', genreClass: 'genre-electronic', imprint: 'Enhanced Progressive', date: 'Yesterday', avatar: 'Avatars/demmo-avatar-x4.webp', audio: 'audio/daydreaming.mp3', priority: false, submissions: 2, accepted: 0, firstSub: 'Dec 2025', lastSub: 'Feb 2026', followers: 31200, socials: { spotify: 'https://open.spotify.com/artist/softlaunch', instagram: 'https://instagram.com/softlaunchband', youtube: 'https://youtube.com/@softlaunch', soundcloud: 'https://soundcloud.com/softlaunch' } },
-            { id: 5, status: 'new', track: 'Hollow Season', artist: 'MUNA', genre: 'Pop', genreClass: 'genre-pop', imprint: 'Colorize', date: '2 days ago', avatar: 'Avatars/demmo-avatar-x1.webp', audio: 'audio/machina.mp3', priority: false, submissions: 4, accepted: 1, firstSub: 'Oct 2025', lastSub: 'Feb 2026', followers: 612000, socials: { spotify: 'https://open.spotify.com/artist/muna', instagram: 'https://instagram.com/munatheband', youtube: 'https://youtube.com/@munatheband', soundcloud: 'https://soundcloud.com/munatheband' } },
-            { id: 6, status: 'new', track: 'Drift (Unmastered)', artist: 'PREP', genre: 'R&B', genreClass: 'genre-rnb', imprint: 'Shapes of Solitude', date: '3 days ago', avatar: 'Avatars/demmo-avatar-x2.webp', audio: 'audio/abyss-original-mix.mp3', priority: false, submissions: 1, accepted: 0, firstSub: 'Feb 2026', lastSub: 'Feb 2026', followers: 178000, socials: { spotify: 'https://open.spotify.com/artist/prep', instagram: 'https://instagram.com/weareprepband', youtube: 'https://youtube.com/@prepband', soundcloud: 'https://soundcloud.com/weareprepband' } },
-            { id: 7, status: 'new', track: 'Pale Meridian', artist: 'Still Woozy', genre: 'Indie', genreClass: 'genre-indie', imprint: 'Enhanced Chill', date: '4 days ago', avatar: 'Avatars/demmo-avatar-x3.webp', audio: 'audio/ambient-odyssey.mp3', priority: false, submissions: 7, accepted: 3, firstSub: 'Aug 2025', lastSub: 'Feb 2026', followers: 430000, socials: { spotify: 'https://open.spotify.com/artist/stillwoozy', instagram: 'https://instagram.com/stillwoozy', youtube: 'https://youtube.com/@stillwoozy', soundcloud: 'https://soundcloud.com/stillwoozy' } },
+            { id: 1, status: 'new', track: 'Velvet Static', artist: 'Luna Ray', genre: 'Electronic', genreClass: 'genre-electronic', date: 'Today', avatar: 'Avatars/demmo-avatar-x1.webp', audio: 'audio/run-marc-v-remix.mp3', priority: true, submissions: 3, accepted: 1, firstSub: 'Jan 2026', lastSub: 'Feb 2026', followers: 84500, socials: { spotify: 'https://open.spotify.com/artist/lunaray', instagram: 'https://instagram.com/lunaraymusic', youtube: 'https://youtube.com/@lunaray', soundcloud: 'https://soundcloud.com/lunaray' } },
+            { id: 2, status: 'new', track: 'Slow Burn (Demo)', artist: 'NVDES', genre: 'Indie', genreClass: 'genre-indie', date: 'Today', avatar: 'Avatars/demmo-avatar-x2.webp', audio: 'audio/momentum-extended-mix.mp3', priority: false, submissions: 1, accepted: 0, firstSub: 'Feb 2026', lastSub: 'Feb 2026', followers: 259000, socials: { spotify: 'https://open.spotify.com/artist/nvdes', instagram: 'https://instagram.com/nvdes', youtube: 'https://youtube.com/@nvdes', soundcloud: 'https://soundcloud.com/nvdes' } },
+            { id: 3, status: 'new', track: 'Glass Hours', artist: 'Pale Waves', genre: 'Pop', genreClass: 'genre-pop', date: 'Yesterday', avatar: 'Avatars/demmo-avatar-x3.webp', audio: 'audio/chords-of-serenity.mp3', priority: false, submissions: 5, accepted: 2, firstSub: 'Nov 2025', lastSub: 'Feb 2026', followers: 1240000, socials: { spotify: 'https://open.spotify.com/artist/palewaves', instagram: 'https://instagram.com/palewaves', youtube: 'https://youtube.com/@palewaves', soundcloud: 'https://soundcloud.com/palewaves' } },
+            { id: 4, status: 'new', track: 'Neon Undertow', artist: 'Soft Launch', genre: 'Electronic', genreClass: 'genre-electronic', date: 'Yesterday', avatar: 'Avatars/demmo-avatar-x4.webp', audio: 'audio/daydreaming.mp3', priority: false, submissions: 2, accepted: 0, firstSub: 'Dec 2025', lastSub: 'Feb 2026', followers: 31200, socials: { spotify: 'https://open.spotify.com/artist/softlaunch', instagram: 'https://instagram.com/softlaunchband', youtube: 'https://youtube.com/@softlaunch', soundcloud: 'https://soundcloud.com/softlaunch' } },
+            { id: 5, status: 'new', track: 'Hollow Season', artist: 'MUNA', genre: 'Pop', genreClass: 'genre-pop', date: '2 days ago', avatar: 'Avatars/demmo-avatar-x1.webp', audio: 'audio/machina.mp3', priority: false, submissions: 4, accepted: 1, firstSub: 'Oct 2025', lastSub: 'Feb 2026', followers: 612000, socials: { spotify: 'https://open.spotify.com/artist/muna', instagram: 'https://instagram.com/munatheband', youtube: 'https://youtube.com/@munatheband', soundcloud: 'https://soundcloud.com/munatheband' } },
+            { id: 6, status: 'new', track: 'Drift (Unmastered)', artist: 'PREP', genre: 'R&B', genreClass: 'genre-rnb', date: '3 days ago', avatar: 'Avatars/demmo-avatar-x2.webp', audio: 'audio/abyss-original-mix.mp3', priority: false, submissions: 1, accepted: 0, firstSub: 'Feb 2026', lastSub: 'Feb 2026', followers: 178000, socials: { spotify: 'https://open.spotify.com/artist/prep', instagram: 'https://instagram.com/weareprepband', youtube: 'https://youtube.com/@prepband', soundcloud: 'https://soundcloud.com/weareprepband' } },
+            { id: 7, status: 'new', track: 'Pale Meridian', artist: 'Still Woozy', genre: 'Indie', genreClass: 'genre-indie', date: '4 days ago', avatar: 'Avatars/demmo-avatar-x3.webp', audio: 'audio/ambient-odyssey.mp3', priority: false, submissions: 7, accepted: 3, firstSub: 'Aug 2025', lastSub: 'Feb 2026', followers: 430000, socials: { spotify: 'https://open.spotify.com/artist/stillwoozy', instagram: 'https://instagram.com/stillwoozy', youtube: 'https://youtube.com/@stillwoozy', soundcloud: 'https://soundcloud.com/stillwoozy' } },
         ];
 
         let focusedIndex = 0;
@@ -1803,46 +1591,6 @@
         const toast = document.getElementById('toast');
         const confirmOverlay = document.getElementById('confirmOverlay');
         const artistPopup = document.getElementById('artistPopup');
-
-        // ===== WAVEFORM =====
-        const WAVEFORM_BARS = 80;
-        const waveformCache = {};
-
-        function generateWaveform(trackId) {
-            if (waveformCache[trackId]) return waveformCache[trackId];
-            // Seeded random based on trackId for consistency
-            let seed = trackId * 9301 + 49297;
-            function rand() { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; }
-            const bars = [];
-            for (let i = 0; i < WAVEFORM_BARS; i++) {
-                // Create natural-looking waveform with some continuity
-                const base = 0.15 + rand() * 0.85;
-                // Add envelope shape (quieter at edges)
-                const env = Math.sin((i / WAVEFORM_BARS) * Math.PI) * 0.4 + 0.6;
-                bars.push(Math.max(0.08, base * env));
-            }
-            waveformCache[trackId] = bars;
-            return bars;
-        }
-
-        function renderWaveform(trackId) {
-            const container = document.getElementById('progressTrack');
-            const bars = generateWaveform(trackId || 1);
-            container.innerHTML = bars.map((h, i) =>
-                `<div class="waveform-bar" data-index="${i}" style="height:${Math.round(h * 100)}%"></div>`
-            ).join('');
-        }
-
-        function updateWaveformProgress(pct) {
-            const bars = document.querySelectorAll('#progressTrack .waveform-bar');
-            const playedCount = Math.floor((pct / 100) * bars.length);
-            bars.forEach((bar, i) => {
-                bar.classList.toggle('played', i < playedCount);
-            });
-        }
-
-        // Init waveform with default
-        renderWaveform(1);
 
         // ===== AUDIO ENGINE =====
         let audioEl = new Audio();
@@ -1861,10 +1609,10 @@
             function tick() {
                 if (playingId !== null && !audioEl.paused) {
                     const pct = audioEl.duration ? (audioEl.currentTime / audioEl.duration) * 100 : 0;
-                    updateWaveformProgress(pct);
-                    updateHeroWaveformProgress(pct);
+                    const fill = document.getElementById('progressFill');
                     const timeLeft = document.querySelector('.np-time-current');
                     const timeRight = document.querySelector('.np-time-total');
+                    if (fill) fill.style.width = pct + '%';
                     if (timeLeft) timeLeft.textContent = formatTime(audioEl.currentTime);
                     if (timeRight) timeRight.textContent = formatTime(audioEl.duration);
                 }
@@ -1950,7 +1698,6 @@
                         </div>
                     </div>
                     <div><span class="genre-tag ${t.genreClass}">${t.genre}</span></div>
-                    <div class="track-imprint">${t.imprint}</div>
                     <div class="track-date">${t.date}</div>
                     <div class="track-actions">
                         <button class="action-btn decline" data-action="decline" title="Decline (D)">
@@ -2086,42 +1833,6 @@
             document.getElementById('npTrack').textContent = t.track;
             document.getElementById('npArtist').textContent = t.artist;
             document.getElementById('npArtwork').querySelector('img').src = t.avatar;
-            renderWaveform(id);
-            // Update hero panel
-            document.getElementById('npHeroTrack').textContent = t.track;
-            document.getElementById('npHeroArtist').textContent = t.artist;
-            document.getElementById('npHeroArt').src = t.avatar;
-            renderHeroWaveform(id);
-        }
-
-        function renderHeroWaveform(trackId) {
-            const container = document.getElementById('npHeroWaveform');
-            const bars = generateWaveform(trackId || 1);
-            // Hero uses more bars for the wider space
-            const heroBars = [];
-            for (let i = 0; i < 120; i++) {
-                heroBars.push(bars[i % bars.length]);
-            }
-            container.innerHTML = heroBars.map((h, i) =>
-                `<div class="waveform-bar" data-index="${i}" style="height:${Math.round(h * 100)}%"></div>`
-            ).join('');
-        }
-
-        function updateHeroWaveformProgress(pct) {
-            const bars = document.querySelectorAll('#npHeroWaveform .waveform-bar');
-            const playedCount = Math.floor((pct / 100) * bars.length);
-            bars.forEach((bar, i) => {
-                bar.classList.toggle('played', i < playedCount);
-            });
-        }
-
-        function updateHeroVisibility() {
-            const hero = document.getElementById('npHero');
-            if (playingId !== null && !audioEl.paused) {
-                hero.classList.add('visible');
-            } else {
-                hero.classList.remove('visible');
-            }
         }
 
         // ===== ACTIONS =====
@@ -2334,24 +2045,6 @@
             }
         });
 
-        // ===== IMPRINT SELECTOR =====
-        document.getElementById('imprintBtn').addEventListener('click', (e) => {
-            e.stopPropagation();
-            document.getElementById('imprintDropdown').classList.toggle('open');
-        });
-        document.querySelectorAll('.imprint-option').forEach(opt => {
-            opt.addEventListener('click', () => {
-                document.querySelectorAll('.imprint-option').forEach(o => o.classList.remove('active'));
-                opt.classList.add('active');
-                const label = opt.textContent;
-                document.getElementById('imprintCurrent').textContent = label;
-                document.getElementById('imprintDropdown').classList.remove('open');
-            });
-        });
-        document.addEventListener('click', () => {
-            document.getElementById('imprintDropdown').classList.remove('open');
-        });
-
         // ===== FILTER TABS =====
         document.querySelectorAll('.filter-tab').forEach(tab => {
             tab.addEventListener('click', () => {
@@ -2378,14 +2071,8 @@
         document.getElementById('npPrev').addEventListener('click', playPrev);
         document.getElementById('npNext').addEventListener('click', playNext);
 
-        // Seek on progress bar click (bottom bar + hero)
+        // Seek on progress bar click
         document.getElementById('progressTrack').addEventListener('click', (e) => {
-            if (!audioEl.duration) return;
-            const rect = e.currentTarget.getBoundingClientRect();
-            const pct = (e.clientX - rect.left) / rect.width;
-            audioEl.currentTime = pct * audioEl.duration;
-        });
-        document.getElementById('npHeroWaveform').addEventListener('click', (e) => {
             if (!audioEl.duration) return;
             const rect = e.currentTarget.getBoundingClientRect();
             const pct = (e.clientX - rect.left) / rect.width;
@@ -2422,7 +2109,6 @@
             const playing = playingId !== null && !audioEl.paused;
             npActions.style.display = playing ? 'flex' : 'none';
             npShortcutsEl.style.display = playing ? 'none' : 'flex';
-            updateHeroVisibility();
         }
 
         // Wire bottom-bar action buttons to current playing track
