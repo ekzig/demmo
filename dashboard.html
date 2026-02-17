@@ -507,7 +507,7 @@
 
         .progress-track {
             flex: 1;
-            height: 32px;
+            height: 40px;
             cursor: pointer;
             position: relative;
         }
@@ -614,7 +614,7 @@
         }
 
         .np-hero-waveform {
-            height: 64px;
+            height: 80px;
             cursor: pointer;
         }
 
@@ -1774,11 +1774,12 @@
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         const waveformDataCache = {}; // trackId -> Float32Array of peaks
 
-        // Gradient colors: pink/salmon (left) → purple/lavender (right)
+        // Gradient colors: vivid pink/salmon (left) → rich purple/lavender (right)
         const WAVE_COLOR_STOPS = [
-            { pos: 0,   r: 235, g: 140, b: 160 },  // warm pink
-            { pos: 0.5, r: 220, g: 150, b: 200 },  // pink-purple
-            { pos: 1,   r: 170, g: 140, b: 210 },  // lavender
+            { pos: 0,   r: 245, g: 120, b: 145 },  // vivid salmon-pink
+            { pos: 0.35, r: 235, g: 130, b: 175 },  // hot pink
+            { pos: 0.65, r: 200, g: 130, b: 200 },  // pink-purple
+            { pos: 1,   r: 160, g: 120, b: 215 },  // rich lavender
         ];
 
         function waveGradientColor(t) {
@@ -1794,18 +1795,57 @@
             };
         }
 
-        // Generate fallback peaks (seeded random, looks organic)
+        // Generate fallback peaks that look like real audio waveforms
         let _wfSeed = 1;
         function generateFallbackPeaks(numBars, trackId) {
             _wfSeed = (trackId || 1) * 9301 + 49297;
             function rand() { _wfSeed = (_wfSeed * 9301 + 49297) % 233280; return _wfSeed / 233280; }
+
             const peaks = new Float32Array(numBars);
-            for (let i = 0; i < numBars; i++) {
-                const base = 0.15 + rand() * 0.85;
-                const env = Math.sin((i / numBars) * Math.PI) * 0.4 + 0.6;
-                peaks[i] = Math.max(0.08, base * env);
+
+            // Create several "energy regions" like a real song
+            // (intro quiet, verse medium, chorus loud, bridge quiet, chorus loud, outro fade)
+            const numRegions = 5 + Math.floor(rand() * 4); // 5-8 regions
+            const regions = [];
+            for (let r = 0; r < numRegions; r++) {
+                regions.push({
+                    energy: 0.25 + rand() * 0.75, // base energy level for this region
+                    variance: 0.1 + rand() * 0.3   // how much variation within region
+                });
             }
-            return peaks;
+
+            for (let i = 0; i < numBars; i++) {
+                const pos = i / numBars;
+                // Which region are we in (smooth interpolation between regions)
+                const regionFloat = pos * (numRegions - 1);
+                const regionIdx = Math.min(Math.floor(regionFloat), numRegions - 2);
+                const regionBlend = regionFloat - regionIdx;
+                const smooth = regionBlend * regionBlend * (3 - 2 * regionBlend); // smoothstep
+                const energy = regions[regionIdx].energy * (1 - smooth) + regions[regionIdx + 1].energy * smooth;
+                const variance = regions[regionIdx].variance * (1 - smooth) + regions[regionIdx + 1].variance * smooth;
+
+                // Add multiple octaves of noise for realistic texture
+                const noise1 = rand() * 2 - 1; // fast variation
+                const noise2 = (rand() + rand()) / 2 * 2 - 1; // smoother medium variation
+
+                const val = energy + noise1 * variance * 0.5 + noise2 * variance * 0.5;
+
+                // Intro fade-in & outro fade-out
+                const fadeIn = Math.min(1, pos * 8);    // first 12.5%
+                const fadeOut = Math.min(1, (1 - pos) * 6); // last ~17%
+                const fade = fadeIn * fadeOut;
+
+                peaks[i] = Math.max(0.06, Math.min(1, val * fade));
+            }
+
+            // Smooth the peaks slightly so neighboring bars aren't wildly different
+            const smoothed = new Float32Array(numBars);
+            for (let i = 0; i < numBars; i++) {
+                const prev = i > 0 ? peaks[i - 1] : peaks[i];
+                const next = i < numBars - 1 ? peaks[i + 1] : peaks[i];
+                smoothed[i] = peaks[i] * 0.6 + prev * 0.2 + next * 0.2;
+            }
+            return smoothed;
         }
 
         async function decodeAudioPeaks(audioUrl, numBars) {
@@ -1843,27 +1883,31 @@
             ctx.clearRect(0, 0, w, h);
 
             const numBars = peaks.length;
-            const gap = 1.5;
-            const barWidth = (w - gap * (numBars - 1)) / numBars;
+            // Dense bars with tiny gaps — looks nearly solid like the reference
+            const gap = 0.5;
+            const barWidth = Math.max(1, (w - gap * (numBars - 1)) / numBars);
             const playedBars = Math.floor((playedPct / 100) * numBars);
+            const centerY = h / 2;
 
             for (let i = 0; i < numBars; i++) {
                 const x = i * (barWidth + gap);
-                const barH = Math.max(2, peaks[i] * h * 0.95);
-                const y = h - barH;
-                const t = i / numBars; // position across width
+                // Mirror bars around center (top half + bottom half)
+                const halfH = Math.max(1, peaks[i] * centerY * 0.92);
+                const y = centerY - halfH;
+                const barH = halfH * 2;
+                const t = i / numBars; // position across width for gradient
                 const c = waveGradientColor(t);
 
                 if (i < playedBars) {
-                    // Played: full vivid gradient
-                    ctx.fillStyle = `rgba(${c.r}, ${c.g}, ${c.b}, 0.9)`;
+                    // Played: vivid bright gradient
+                    ctx.fillStyle = `rgba(${c.r}, ${c.g}, ${c.b}, 0.95)`;
                 } else {
-                    // Unplayed: dim version
-                    ctx.fillStyle = `rgba(${c.r}, ${c.g}, ${c.b}, 0.25)`;
+                    // Unplayed: dimmed but still visible
+                    ctx.fillStyle = `rgba(${c.r}, ${c.g}, ${c.b}, 0.35)`;
                 }
 
                 // Draw rounded bar
-                const radius = Math.min(barWidth / 2, 1.5);
+                const radius = Math.min(barWidth / 2, 1);
                 ctx.beginPath();
                 ctx.moveTo(x + radius, y);
                 ctx.lineTo(x + barWidth - radius, y);
@@ -1895,13 +1939,26 @@
         let currentHeroPeaks = null;  // hero peaks
         let currentPlayedPct = 0;
 
+        // Calculate ideal bar count based on container width for dense look
+        function getBarCount(containerId, targetBarWidth) {
+            const el = document.getElementById(containerId);
+            if (!el) return 150;
+            const w = el.getBoundingClientRect().width || 500;
+            // targetBarWidth ~2px + 0.5px gap = ~2.5px per bar
+            return Math.max(80, Math.floor(w / (targetBarWidth + 0.5)));
+        }
+
         async function loadWaveformForTrack(trackId) {
             const t = tracks.find(tr => tr.id === trackId);
             if (!t) return;
 
+            // Calculate bar counts based on actual container widths for dense look
+            const bottomBars = getBarCount('progressTrack', 2);
+            const heroBars = getBarCount('npHeroWaveform', 2);
+
             // Show generated fallback immediately so something is always visible
-            currentPeaks = generateFallbackPeaks(200, trackId);
-            currentHeroPeaks = generateFallbackPeaks(300, trackId);
+            currentPeaks = generateFallbackPeaks(bottomBars, trackId);
+            currentHeroPeaks = generateFallbackPeaks(heroBars, trackId + 1000); // different seed
             redrawWaveforms();
 
             // Then try to decode real audio data and upgrade
@@ -1909,11 +1966,11 @@
                 if (audioCtx.state === 'suspended') await audioCtx.resume();
                 const cacheKey = t.audio;
                 if (!waveformDataCache[cacheKey]) {
-                    waveformDataCache[cacheKey] = await decodeAudioPeaks(t.audio, 400);
+                    waveformDataCache[cacheKey] = await decodeAudioPeaks(t.audio, 800);
                 }
                 const fullPeaks = waveformDataCache[cacheKey];
-                currentPeaks = downsamplePeaks(fullPeaks, 200);
-                currentHeroPeaks = downsamplePeaks(fullPeaks, 300);
+                currentPeaks = downsamplePeaks(fullPeaks, bottomBars);
+                currentHeroPeaks = downsamplePeaks(fullPeaks, heroBars);
                 redrawWaveforms();
             } catch (e) {
                 // Fallback already showing, just log
