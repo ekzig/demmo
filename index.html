@@ -7,7 +7,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600&family=Stack+Sans+Headline:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.typekit.net/zaw6kbv.css">
     <style>
         :root {
             --pink-primary: #e7a2c8;
@@ -61,7 +62,7 @@
             pointer-events: none;
         }
 
-        /* Single soft wash behind the headline — no animation, no drift */
+        /* Single soft wash behind the headline */
         .glow-1 {
             width: 700px; height: 400px;
             background: radial-gradient(ellipse, rgba(231, 162, 200, 0.1) 0%, transparent 70%);
@@ -69,16 +70,11 @@
             filter: blur(100px);
         }
 
-        /* Hide the other two — we only need one */
         .glow-2, .glow-3 { display: none; }
         
-        .hero-grid {
-            display: none;
-        }
-        
         .headline-font {
-            font-family: "Stack Sans Headline", sans-serif;
-            font-weight: 400;
+            font-family: "halogen", sans-serif;
+            font-weight: 700;
         }
         
         .headline-gradient {
@@ -153,15 +149,17 @@
             font-size: 11px;
             color: rgba(255, 255, 255, 0.4);
         }
-        
+
         .demo-status {
             font-family: 'JetBrains Mono', monospace;
             font-size: 9px;
             font-weight: 500;
-            padding: 3px 8px;
-            border-radius: 6px;
+            padding: 3px 7px;
+            border-radius: 4px;
             letter-spacing: 0.03em;
             text-transform: uppercase;
+            flex-shrink: 0;
+            margin-left: auto;
         }
         
         .status-shortlist {
@@ -193,12 +191,6 @@
             display: flex;
             gap: 4px;
             margin-left: 8px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
-        .demo-card:hover .quick-actions {
-            opacity: 1;
         }
         
         .quick-btn {
@@ -551,13 +543,7 @@
         .track-actions {
             display: flex;
             gap: 4px;
-            opacity: 0;
-            transition: opacity 0.2s ease;
             margin-left: 8px;
-        }
-
-        .track-row:hover .track-actions {
-            opacity: 1;
         }
 
         .track-action-btn {
@@ -567,33 +553,41 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(255, 255, 255, 0.03);
-            color: rgba(255, 255, 255, 0.5);
             cursor: pointer;
             transition: all 0.2s ease;
         }
 
-        .track-action-btn:hover {
-            background: rgba(255, 255, 255, 0.06);
+        .track-action-btn.pass {
+            background: rgba(252, 165, 165, 0.08);
+            border: 1px solid rgba(252, 165, 165, 0.2);
+            color: rgba(252, 165, 165, 0.6);
+        }
+        .track-action-btn.pass:hover {
+            background: var(--peach-glow);
+            border-color: rgba(252, 165, 165, 0.35);
+            color: var(--peach);
         }
 
+        .track-action-btn.shortlist {
+            background: rgba(252, 211, 77, 0.08);
+            border: 1px solid rgba(252, 211, 77, 0.2);
+            color: rgba(252, 211, 77, 0.6);
+        }
         .track-action-btn.shortlist:hover {
             background: var(--gold-glow);
-            border-color: rgba(252, 211, 77, 0.3);
+            border-color: rgba(252, 211, 77, 0.35);
             color: var(--gold);
         }
 
+        .track-action-btn.accept {
+            background: rgba(110, 231, 183, 0.08);
+            border: 1px solid rgba(110, 231, 183, 0.2);
+            color: rgba(110, 231, 183, 0.6);
+        }
         .track-action-btn.accept:hover {
             background: var(--mint-glow);
-            border-color: rgba(110, 231, 183, 0.3);
+            border-color: rgba(110, 231, 183, 0.35);
             color: var(--mint);
-        }
-
-        .track-action-btn.pass:hover {
-            background: var(--peach-glow);
-            border-color: rgba(252, 165, 165, 0.3);
-            color: var(--peach);
         }
 
         .track-action-btn svg {
@@ -625,12 +619,26 @@
             font-family: 'JetBrains Mono', monospace;
             font-size: 10px;
             padding: 4px 8px;
-            background: rgba(255, 255, 255, 0.05);
             border-radius: 6px;
-            color: rgba(255, 255, 255, 0.4);
             margin-left: auto;
             margin-right: 10px;
             flex-shrink: 0;
+        }
+
+        .track-genre.genre-electronic {
+            background: rgba(196, 181, 253, 0.1);
+            color: var(--lavender);
+            border: 1px solid rgba(196, 181, 253, 0.15);
+        }
+        .track-genre.genre-indie {
+            background: rgba(252, 211, 77, 0.1);
+            color: var(--gold);
+            border: 1px solid rgba(252, 211, 77, 0.15);
+        }
+        .track-genre.genre-pop {
+            background: rgba(231, 162, 200, 0.1);
+            color: var(--pink-primary);
+            border: 1px solid rgba(231, 162, 200, 0.15);
         }
         
         .track-status {
@@ -1012,7 +1020,7 @@
         }
         
         .plan-name {
-            font-family: "Stack Sans Headline", sans-serif;
+            font-family: "halogen", sans-serif;
             font-size: 22px;
             font-weight: 500;
             margin-bottom: 8px;
@@ -1278,7 +1286,7 @@
         }
         
         .final-cta h2 {
-            font-family: "Stack Sans Headline", sans-serif;
+            font-family: "halogen", sans-serif;
             font-size: 32px;
             font-weight: 400;
             margin-bottom: 16px;
@@ -1333,7 +1341,7 @@
         }
         
         .footer-logo {
-            font-family: "Stack Sans Headline", sans-serif;
+            font-family: "halogen", sans-serif;
             font-size: 18px;
             color: rgba(255, 255, 255, 0.6);
         }
@@ -1440,9 +1448,9 @@
                 <h4>Midnight Drive</h4>
                 <div class="demo-meta">
                     <span>Luna Ray</span>
-                    <span class="demo-status status-shortlist">Shortlist</span>
                 </div>
             </div>
+            <span class="demo-status status-shortlist">Shortlist</span>
             <div class="quick-actions">
                 <button class="quick-btn pass" title="Pass">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
@@ -1462,9 +1470,9 @@
                 <h4>Electric Sunrise</h4>
                 <div class="demo-meta">
                     <span>NVDES</span>
-                    <span class="demo-status status-new">New</span>
                 </div>
             </div>
+            <span class="demo-status status-new">New</span>
             <div class="quick-actions">
                 <button class="quick-btn pass" title="Pass">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
@@ -1483,9 +1491,9 @@
                 <h4>Echoes</h4>
                 <div class="demo-meta">
                     <span>Pale Waves</span>
-                    <span class="demo-status status-signed">Signed ✓</span>
                 </div>
             </div>
+            <span class="demo-status status-signed">Signed ✓</span>
         </div>
         
         <div class="demo-card hidden lg:flex" style="top: 48%; right: 5%; animation-delay: -4s; --accent: var(--lavender); --glow: var(--lavender-glow); --art-from: #c4b5fd; --art-to: #a78bfa;">
@@ -1496,9 +1504,9 @@
                 <h4>Golden Hour</h4>
                 <div class="demo-meta">
                     <span>Soft Launch</span>
-                    <span class="demo-status status-review">Review</span>
                 </div>
             </div>
+            <span class="demo-status status-review">Review</span>
         </div>
         
         <div class="max-w-4xl mx-auto text-center relative z-10">
@@ -1578,6 +1586,7 @@
                             </svg>
                             With Demmo
                         </div>
+                        <p style="font-size: 11px; color: rgba(255,255,255,0.3); margin: -16px 0 16px 26px;">New submissions</p>
                         
                         <div class="track-row" data-track="midnight-drive" data-artist="Luna Ray">
                             <div class="track-play">
@@ -1591,17 +1600,17 @@
                             <div class="track-waveform">
                                 <span></span><span></span><span></span><span></span><span></span>
                             </div>
-                            <span class="track-genre">Electronic</span>
-                            <span class="track-status accepted"><span class="dot"></span> Accepted</span>
+                            <span class="track-genre genre-electronic">Electronic</span>
+
                             <div class="track-actions">
+                                <button class="track-action-btn pass" title="Pass">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                                </button>
                                 <button class="track-action-btn shortlist" title="Shortlist">
                                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
                                 </button>
                                 <button class="track-action-btn accept" title="Accept">
                                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                                </button>
-                                <button class="track-action-btn pass" title="Pass">
-                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                                 </button>
                             </div>
                         </div>
@@ -1618,17 +1627,17 @@
                             <div class="track-waveform">
                                 <span></span><span></span><span></span><span></span><span></span>
                             </div>
-                            <span class="track-genre">Indie</span>
-                            <span class="track-status shortlist"><span class="dot"></span> Shortlist</span>
+                            <span class="track-genre genre-indie">Indie</span>
+
                             <div class="track-actions">
+                                <button class="track-action-btn pass" title="Pass">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                                </button>
                                 <button class="track-action-btn shortlist" title="Shortlist">
                                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
                                 </button>
                                 <button class="track-action-btn accept" title="Accept">
                                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                                </button>
-                                <button class="track-action-btn pass" title="Pass">
-                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                                 </button>
                             </div>
                         </div>
@@ -1645,17 +1654,17 @@
                             <div class="track-waveform">
                                 <span></span><span></span><span></span><span></span><span></span>
                             </div>
-                            <span class="track-genre">Pop</span>
-                            <span class="track-status new"><span class="dot"></span> New</span>
+                            <span class="track-genre genre-pop">Pop</span>
+
                             <div class="track-actions">
+                                <button class="track-action-btn pass" title="Pass">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                                </button>
                                 <button class="track-action-btn shortlist" title="Shortlist">
                                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
                                 </button>
                                 <button class="track-action-btn accept" title="Accept">
                                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                                </button>
-                                <button class="track-action-btn pass" title="Pass">
-                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
                                 </button>
                             </div>
                         </div>
