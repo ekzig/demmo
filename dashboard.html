@@ -378,6 +378,156 @@
             box-shadow: 0 1px 3px rgba(0,0,0,0.3);
         }
 
+        /* ===== OVERVIEW STRIP ===== */
+        .overview-strip {
+            padding: 14px 28px;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg-primary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+            gap: 32px;
+        }
+
+        .overview-left {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            min-width: 0;
+        }
+
+        .overview-stats {
+            display: flex;
+            gap: 20px;
+        }
+
+        .overview-stat {
+            display: flex;
+            align-items: baseline;
+            gap: 5px;
+        }
+
+        .overview-stat-value {
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+
+        .overview-stat-label {
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            color: var(--text-tertiary);
+        }
+
+        .overview-progress {
+            display: flex;
+            height: 3px;
+            border-radius: 2px;
+            overflow: hidden;
+            width: 100%;
+            background: rgba(255,255,255,0.04);
+            gap: 1px;
+        }
+
+        .overview-progress-seg {
+            height: 100%;
+            border-radius: 1px;
+            transition: width 0.3s ease;
+        }
+
+        .overview-context {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            flex-shrink: 0;
+        }
+
+        .overview-context-label {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .overview-context-sub {
+            font-size: 10px;
+            color: var(--text-tertiary);
+        }
+
+        .overview-right {
+            flex-shrink: 0;
+        }
+
+        .overview-sort {
+            position: relative;
+        }
+
+        .overview-sort-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            border-radius: 7px;
+            border: 1px solid var(--border);
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            white-space: nowrap;
+        }
+
+        .overview-sort-btn:hover {
+            border-color: var(--border-hover);
+            background: var(--bg-hover);
+            color: var(--text-primary);
+        }
+
+        .overview-sort-btn span {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .overview-sort-dropdown {
+            display: none;
+            position: absolute;
+            top: calc(100% + 4px);
+            right: 0;
+            min-width: 140px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-hover);
+            border-radius: 10px;
+            padding: 4px;
+            z-index: 100;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+        }
+
+        .overview-sort-dropdown.open {
+            display: block;
+        }
+
+        .sort-option {
+            padding: 7px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.1s ease;
+        }
+
+        .sort-option:hover {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+        }
+
+        .sort-option.active {
+            color: var(--pink);
+            background: var(--pink-glow);
+        }
+
         /* ===== NOW PLAYING BAR ===== */
         .now-playing-bar {
             padding: 0 20px;
@@ -1732,6 +1882,48 @@
                 </div>
             </div>
 
+            <!-- Overview Strip (focus anchor) -->
+            <div class="overview-strip" id="overviewStrip">
+                <div class="overview-left">
+                    <div class="overview-stats">
+                        <div class="overview-stat">
+                            <span class="overview-stat-value" id="ovNew" style="color:var(--pink)">0</span>
+                            <span class="overview-stat-label">New</span>
+                        </div>
+                        <div class="overview-stat">
+                            <span class="overview-stat-value" id="ovShortlisted" style="color:var(--gold)">0</span>
+                            <span class="overview-stat-label">Shortlisted</span>
+                        </div>
+                        <div class="overview-stat">
+                            <span class="overview-stat-value" id="ovAccepted" style="color:var(--mint)">0</span>
+                            <span class="overview-stat-label">Accepted</span>
+                        </div>
+                        <div class="overview-stat">
+                            <span class="overview-stat-value" id="ovDeclined" style="color:var(--text-tertiary)">0</span>
+                            <span class="overview-stat-label">Declined</span>
+                        </div>
+                    </div>
+                    <div class="overview-progress" id="overviewProgress"></div>
+                </div>
+                <div class="overview-context">
+                    <div class="overview-context-label" id="ovImprint">Enhanced Music · All Imprints</div>
+                    <div class="overview-context-sub" id="ovBatch">0 demos · Feb 2026</div>
+                </div>
+                <div class="overview-right">
+                    <div class="overview-sort" id="overviewSort">
+                        <button class="overview-sort-btn" id="sortBtn">
+                            Sort: <span id="sortCurrent">Newest</span>
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:12px;height:12px;opacity:0.5;flex-shrink:0"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </button>
+                        <div class="overview-sort-dropdown" id="sortDropdown">
+                            <div class="sort-option active" data-sort="newest">Newest</div>
+                            <div class="sort-option" data-sort="popularity">Popularity</div>
+                            <div class="sort-option" data-sort="genre">Genre</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Now Playing Hero (waveform strip) -->
             <div class="np-hero" id="npHero">
                 <div class="np-hero-inner">
@@ -1995,6 +2187,7 @@
         let focusedIndex = 0;
         let playingId = null;
         let currentFilter = 'new';
+        let currentSort = 'newest';
         const trackList = document.getElementById('trackList');
         const emptyState = document.getElementById('emptyState');
         const toast = document.getElementById('toast');
@@ -2377,7 +2570,14 @@
 
         // ===== RENDER TRACKS =====
         function renderTracks() {
-            const visible = tracks.filter(t => t.status === currentFilter);
+            let visible = tracks.filter(t => t.status === currentFilter);
+            // Apply sort
+            if (currentSort === 'popularity') {
+                visible = visible.slice().sort((a, b) => (b.followers || 0) - (a.followers || 0));
+            } else if (currentSort === 'genre') {
+                visible = visible.slice().sort((a, b) => a.genre.localeCompare(b.genre));
+            }
+            // 'newest' = default order (as defined in tracks array)
             const maxFollowers = Math.max(...tracks.map(t => t.followers || 0));
             if (visible.length === 0) {
                 trackList.innerHTML = '';
@@ -2724,6 +2924,38 @@
             if (navAssign) navAssign.textContent = newCount;
             if (navShort)  navShort.textContent  = shortlistCount || '';
             if (navAccept) navAccept.textContent  = acceptedCount || '';
+
+            // Overview strip stats
+            document.getElementById('ovNew').textContent = newCount;
+            document.getElementById('ovShortlisted').textContent = shortlistCount;
+            document.getElementById('ovAccepted').textContent = acceptedCount;
+            document.getElementById('ovDeclined').textContent = declinedCount;
+
+            // Stacked progress bar
+            const total = tracks.length;
+            const prog = document.getElementById('overviewProgress');
+            if (total > 0) {
+                prog.innerHTML =
+                    (newCount ? `<div class="overview-progress-seg" style="width:${newCount/total*100}%;background:var(--pink)"></div>` : '') +
+                    (shortlistCount ? `<div class="overview-progress-seg" style="width:${shortlistCount/total*100}%;background:var(--gold)"></div>` : '') +
+                    (acceptedCount ? `<div class="overview-progress-seg" style="width:${acceptedCount/total*100}%;background:var(--mint)"></div>` : '') +
+                    (declinedCount ? `<div class="overview-progress-seg" style="width:${declinedCount/total*100}%;background:rgba(255,255,255,0.15)"></div>` : '');
+            } else {
+                prog.innerHTML = '';
+            }
+
+            // Batch context
+            const now = new Date();
+            const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+            document.getElementById('ovBatch').textContent = `${total} demos · ${monthNames[now.getMonth()]} ${now.getFullYear()}`;
+
+            // Imprint context
+            const imprintText = document.getElementById('imprintCurrent')?.textContent || 'Enhanced Music';
+            const activeImprint = document.querySelector('.imprint-option.active');
+            const imprintLabel = activeImprint && activeImprint.dataset.imprint !== 'all'
+                ? `${imprintText} · ${activeImprint.textContent.trim()}`
+                : imprintText;
+            document.getElementById('ovImprint').textContent = imprintLabel;
         }
 
         // ===== CONFIRM MODAL =====
@@ -2845,10 +3077,33 @@
                 const label = opt.textContent;
                 document.getElementById('imprintCurrent').textContent = label;
                 document.getElementById('imprintDropdown').classList.remove('open');
+                updateCount(); // refresh overview context with new imprint
             });
         });
         document.addEventListener('click', () => {
             document.getElementById('imprintDropdown').classList.remove('open');
+            document.getElementById('sortDropdown').classList.remove('open');
+        });
+
+        // ===== SORT DROPDOWN =====
+        document.getElementById('sortBtn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            document.getElementById('sortDropdown').classList.toggle('open');
+        });
+        document.querySelectorAll('.sort-option').forEach(opt => {
+            opt.addEventListener('click', (e) => {
+                e.stopPropagation();
+                document.querySelectorAll('.sort-option').forEach(o => o.classList.remove('active'));
+                opt.classList.add('active');
+                currentSort = opt.dataset.sort;
+                document.getElementById('sortCurrent').textContent = opt.textContent;
+                document.getElementById('sortDropdown').classList.remove('open');
+                focusedIndex = 0;
+                renderTracks();
+                // Update detail panel to first track after re-sort
+                const visible = tracks.filter(t => t.status === currentFilter);
+                updateDetailPanel(visible.length > 0 ? visible[0].id : null);
+            });
         });
 
         // ===== FILTER TABS =====
@@ -2964,6 +3219,7 @@
 
         // ===== INIT =====
         renderTracks();
+        updateCount(); // populate overview strip stats
         startProgressLoop();
         // Initialize detail panel with first visible track
         const initVisible = tracks.filter(t => t.status === currentFilter);
