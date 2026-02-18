@@ -353,50 +353,48 @@
             flex-shrink: 0;
         }
 
-        /* Pipeline stage tabs — slanted parallelogram style */
+        /* Pipeline stage tabs — slanted / flush with bar */
         .stage-pipeline {
             display: flex;
             align-items: stretch;
-            gap: 3px;
-            padding: 6px 0;
+            gap: 0;
         }
 
         .stage-tab {
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 7px 18px;
+            padding: 0 22px;
             cursor: pointer;
             transition: all 0.15s ease;
             position: relative;
             border: none;
-            background: rgba(255,255,255,0.03);
+            background: transparent;
             white-space: nowrap;
             transform: skewX(-12deg);
-            border-radius: 4px;
-            border: 1px solid transparent;
+            border-radius: 0;
+            border-right: 1px solid var(--border);
+        }
+
+        .stage-tab:first-child {
+            border-left: 1px solid var(--border);
         }
 
         .stage-tab:hover {
-            background: rgba(255,255,255,0.06);
-            border-color: var(--border);
+            background: rgba(255,255,255,0.03);
         }
 
         .stage-tab.active {
-            background: rgba(255,255,255,0.07);
-            border-color: var(--border-hover);
+            background: rgba(255,255,255,0.05);
         }
 
         .stage-tab.active::after {
             content: '';
             position: absolute;
-            bottom: -7px;
-            left: 20%;
-            right: 20%;
+            bottom: -1px;
+            left: 0;
+            right: 0;
             height: 2px;
             background: var(--pink);
-            border-radius: 1px;
-            transform: skewX(12deg);
         }
 
         /* Counter-skew the content so text stays upright */
@@ -463,10 +461,10 @@
             display: none;
         }
 
-        /* Declined gap — extra margin to visually separate from main flow */
+        /* Declined — extra gap to separate from main flow */
         .stage-tab[data-filter="declined"] {
-            margin-left: 10px;
-            opacity: 0.7;
+            margin-left: 14px;
+            opacity: 0.6;
         }
 
         .stage-tab[data-filter="declined"]:hover,
