@@ -944,6 +944,62 @@
             background: var(--mint-glow);
         }
 
+        /* Detail: Track Flags */
+        .detail-flags {
+            padding: 14px 20px;
+            border-bottom: 1px solid var(--border);
+        }
+        .detail-flags-title {
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-tertiary);
+            margin-bottom: 10px;
+        }
+        .detail-flags-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .detail-flag {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.01em;
+            border: 1px solid;
+            line-height: 1.4;
+        }
+        .detail-flag svg {
+            width: 12px;
+            height: 12px;
+            flex-shrink: 0;
+        }
+        .detail-flag.flag-yes {
+            color: var(--mint);
+            border-color: var(--mint-border);
+            background: var(--mint-glow);
+        }
+        .detail-flag.flag-no {
+            color: var(--text-tertiary);
+            border-color: var(--border);
+            background: transparent;
+        }
+        .detail-flag.flag-warn {
+            color: var(--peach);
+            border-color: var(--peach-border);
+            background: var(--peach-glow);
+        }
+        .detail-flag.flag-caution {
+            color: var(--gold);
+            border-color: var(--gold-border);
+            background: var(--gold-glow);
+        }
+
         /* ===== TRACK LIST ===== */
         .track-list-container {
             flex: 1;
@@ -2015,6 +2071,12 @@
                         <div class="detail-stat-label">Latest</div>
                     </div>
                 </div>
+                <div class="detail-flags">
+                    <div class="detail-flags-title">Track Info</div>
+                    <div class="detail-flags-list" id="detailFlagsList">
+                        <!-- populated by JS -->
+                    </div>
+                </div>
                 <div class="detail-actions">
                     <button class="detail-action-btn decline" id="detailDecline">
                         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:14px;height:14px"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
@@ -2175,13 +2237,13 @@
     <script>
         // ===== DEMO DATA =====
         const tracks = [
-            { id: 1, status: 'new', track: 'Velvet Static', artist: 'Luna Ray', genre: 'Electronic', genreClass: 'genre-electronic', imprint: 'Colorize', date: 'Today', avatar: 'Avatars/demmo-avatar-x1.webp', audio: 'audio/run-marc-v-remix.mp3', priority: true, submissions: 3, accepted: 1, firstSub: 'Jan 2026', lastSub: 'Feb 2026', followers: 84500, socials: { spotify: 'https://open.spotify.com/artist/lunaray', instagram: 'https://instagram.com/lunaraymusic', youtube: 'https://youtube.com/@lunaray', soundcloud: 'https://soundcloud.com/lunaray' } },
-            { id: 2, status: 'new', track: 'Slow Burn (Demo)', artist: 'NVDES', genre: 'Indie', genreClass: 'genre-indie', imprint: 'Enhanced Chill', date: 'Today', avatar: 'Avatars/demmo-avatar-x2.webp', audio: 'audio/momentum-extended-mix.mp3', priority: false, submissions: 1, accepted: 0, firstSub: 'Feb 2026', lastSub: 'Feb 2026', followers: 259000, socials: { spotify: 'https://open.spotify.com/artist/nvdes', instagram: 'https://instagram.com/nvdes', youtube: 'https://youtube.com/@nvdes', soundcloud: 'https://soundcloud.com/nvdes' } },
-            { id: 3, status: 'new', track: 'Glass Hours', artist: 'Pale Waves', genre: 'Pop', genreClass: 'genre-pop', imprint: 'Enhanced Recordings', date: 'Yesterday', avatar: 'Avatars/demmo-avatar-x3.webp', audio: 'audio/chords-of-serenity.mp3', priority: false, submissions: 5, accepted: 2, firstSub: 'Nov 2025', lastSub: 'Feb 2026', followers: 1240000, socials: { spotify: 'https://open.spotify.com/artist/palewaves', instagram: 'https://instagram.com/palewaves', youtube: 'https://youtube.com/@palewaves', soundcloud: 'https://soundcloud.com/palewaves' } },
-            { id: 4, status: 'new', track: 'Neon Undertow', artist: 'Soft Launch', genre: 'Electronic', genreClass: 'genre-electronic', imprint: 'Enhanced Progressive', date: 'Yesterday', avatar: 'Avatars/demmo-avatar-x4.webp', audio: 'audio/daydreaming.mp3', priority: false, submissions: 2, accepted: 0, firstSub: 'Dec 2025', lastSub: 'Feb 2026', followers: 31200, socials: { spotify: 'https://open.spotify.com/artist/softlaunch', instagram: 'https://instagram.com/softlaunchband', youtube: 'https://youtube.com/@softlaunch', soundcloud: 'https://soundcloud.com/softlaunch' } },
-            { id: 5, status: 'new', track: 'Hollow Season', artist: 'MUNA', genre: 'Pop', genreClass: 'genre-pop', imprint: 'Colorize', date: '2 days ago', avatar: 'Avatars/demmo-avatar-x1.webp', audio: 'audio/machina.mp3', priority: false, submissions: 4, accepted: 1, firstSub: 'Oct 2025', lastSub: 'Feb 2026', followers: 612000, socials: { spotify: 'https://open.spotify.com/artist/muna', instagram: 'https://instagram.com/munatheband', youtube: 'https://youtube.com/@munatheband', soundcloud: 'https://soundcloud.com/munatheband' } },
-            { id: 6, status: 'new', track: 'Drift (Unmastered)', artist: 'PREP', genre: 'R&B', genreClass: 'genre-rnb', imprint: 'Shapes of Solitude', date: '3 days ago', avatar: 'Avatars/demmo-avatar-x2.webp', audio: 'audio/abyss-original-mix.mp3', priority: false, submissions: 1, accepted: 0, firstSub: 'Feb 2026', lastSub: 'Feb 2026', followers: 178000, socials: { spotify: 'https://open.spotify.com/artist/prep', instagram: 'https://instagram.com/weareprepband', youtube: 'https://youtube.com/@prepband', soundcloud: 'https://soundcloud.com/weareprepband' } },
-            { id: 7, status: 'new', track: 'Pale Meridian', artist: 'Still Woozy', genre: 'Indie', genreClass: 'genre-indie', imprint: 'Enhanced Chill', date: '4 days ago', avatar: 'Avatars/demmo-avatar-x3.webp', audio: 'audio/ambient-odyssey.mp3', priority: false, submissions: 7, accepted: 3, firstSub: 'Aug 2025', lastSub: 'Feb 2026', followers: 430000, socials: { spotify: 'https://open.spotify.com/artist/stillwoozy', instagram: 'https://instagram.com/stillwoozy', youtube: 'https://youtube.com/@stillwoozy', soundcloud: 'https://soundcloud.com/stillwoozy' } },
+            { id: 1, status: 'new', track: 'Velvet Static', artist: 'Luna Ray', genre: 'Electronic', genreClass: 'genre-electronic', imprint: 'Colorize', date: 'Today', avatar: 'Avatars/demmo-avatar-x1.webp', audio: 'audio/run-marc-v-remix.mp3', priority: true, submissions: 3, accepted: 1, firstSub: 'Jan 2026', lastSub: 'Feb 2026', followers: 84500, isOriginal: true, isRemix: false, isInstrumental: false, aiUsage: 'none', isExclusive: true, samplesCleared: true, socials: { spotify: 'https://open.spotify.com/artist/lunaray', instagram: 'https://instagram.com/lunaraymusic', youtube: 'https://youtube.com/@lunaray', soundcloud: 'https://soundcloud.com/lunaray' } },
+            { id: 2, status: 'new', track: 'Slow Burn (Demo)', artist: 'NVDES', genre: 'Indie', genreClass: 'genre-indie', imprint: 'Enhanced Chill', date: 'Today', avatar: 'Avatars/demmo-avatar-x2.webp', audio: 'audio/momentum-extended-mix.mp3', priority: false, submissions: 1, accepted: 0, firstSub: 'Feb 2026', lastSub: 'Feb 2026', followers: 259000, isOriginal: true, isRemix: false, isInstrumental: false, aiUsage: 'not_predominantly', isExclusive: false, samplesCleared: true, socials: { spotify: 'https://open.spotify.com/artist/nvdes', instagram: 'https://instagram.com/nvdes', youtube: 'https://youtube.com/@nvdes', soundcloud: 'https://soundcloud.com/nvdes' } },
+            { id: 3, status: 'new', track: 'Glass Hours', artist: 'Pale Waves', genre: 'Pop', genreClass: 'genre-pop', imprint: 'Enhanced Recordings', date: 'Yesterday', avatar: 'Avatars/demmo-avatar-x3.webp', audio: 'audio/chords-of-serenity.mp3', priority: false, submissions: 5, accepted: 2, firstSub: 'Nov 2025', lastSub: 'Feb 2026', followers: 1240000, isOriginal: true, isRemix: false, isInstrumental: false, aiUsage: 'none', isExclusive: true, samplesCleared: true, socials: { spotify: 'https://open.spotify.com/artist/palewaves', instagram: 'https://instagram.com/palewaves', youtube: 'https://youtube.com/@palewaves', soundcloud: 'https://soundcloud.com/palewaves' } },
+            { id: 4, status: 'new', track: 'Neon Undertow', artist: 'Soft Launch', genre: 'Electronic', genreClass: 'genre-electronic', imprint: 'Enhanced Progressive', date: 'Yesterday', avatar: 'Avatars/demmo-avatar-x4.webp', audio: 'audio/daydreaming.mp3', priority: false, submissions: 2, accepted: 0, firstSub: 'Dec 2025', lastSub: 'Feb 2026', followers: 31200, isOriginal: false, isRemix: true, isInstrumental: true, aiUsage: 'none', isExclusive: false, samplesCleared: true, socials: { spotify: 'https://open.spotify.com/artist/softlaunch', instagram: 'https://instagram.com/softlaunchband', youtube: 'https://youtube.com/@softlaunch', soundcloud: 'https://soundcloud.com/softlaunch' } },
+            { id: 5, status: 'new', track: 'Hollow Season', artist: 'MUNA', genre: 'Pop', genreClass: 'genre-pop', imprint: 'Colorize', date: '2 days ago', avatar: 'Avatars/demmo-avatar-x1.webp', audio: 'audio/machina.mp3', priority: false, submissions: 4, accepted: 1, firstSub: 'Oct 2025', lastSub: 'Feb 2026', followers: 612000, isOriginal: true, isRemix: false, isInstrumental: false, aiUsage: 'predominantly', isExclusive: true, samplesCleared: false, socials: { spotify: 'https://open.spotify.com/artist/muna', instagram: 'https://instagram.com/munatheband', youtube: 'https://youtube.com/@munatheband', soundcloud: 'https://soundcloud.com/munatheband' } },
+            { id: 6, status: 'new', track: 'Drift (Unmastered)', artist: 'PREP', genre: 'R&B', genreClass: 'genre-rnb', imprint: 'Shapes of Solitude', date: '3 days ago', avatar: 'Avatars/demmo-avatar-x2.webp', audio: 'audio/abyss-original-mix.mp3', priority: false, submissions: 1, accepted: 0, firstSub: 'Feb 2026', lastSub: 'Feb 2026', followers: 178000, isOriginal: true, isRemix: false, isInstrumental: false, aiUsage: 'none', isExclusive: false, samplesCleared: true, socials: { spotify: 'https://open.spotify.com/artist/prep', instagram: 'https://instagram.com/weareprepband', youtube: 'https://youtube.com/@prepband', soundcloud: 'https://soundcloud.com/weareprepband' } },
+            { id: 7, status: 'new', track: 'Pale Meridian', artist: 'Still Woozy', genre: 'Indie', genreClass: 'genre-indie', imprint: 'Enhanced Chill', date: '4 days ago', avatar: 'Avatars/demmo-avatar-x3.webp', audio: 'audio/ambient-odyssey.mp3', priority: false, submissions: 7, accepted: 3, firstSub: 'Aug 2025', lastSub: 'Feb 2026', followers: 430000, isOriginal: false, isRemix: true, isInstrumental: false, aiUsage: 'not_predominantly', isExclusive: true, samplesCleared: true, socials: { spotify: 'https://open.spotify.com/artist/stillwoozy', instagram: 'https://instagram.com/stillwoozy', youtube: 'https://youtube.com/@stillwoozy', soundcloud: 'https://soundcloud.com/stillwoozy' } },
         ];
 
         let focusedIndex = 0;
@@ -2798,6 +2860,51 @@
             document.getElementById('detailAccepted').textContent = t.accepted || 0;
             document.getElementById('detailFirstSub').textContent = t.firstSub || '—';
             document.getElementById('detailLastSub').textContent = t.lastSub || '—';
+
+            // Track flags
+            const checkSvg = '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>';
+            const xSvg = '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>';
+            const warnSvg = '<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>';
+
+            let flagsHtml = '';
+
+            // Original vs Remix
+            if (t.isOriginal) {
+                flagsHtml += `<span class="detail-flag flag-yes">${checkSvg} Original</span>`;
+            }
+            if (t.isRemix) {
+                flagsHtml += `<span class="detail-flag flag-caution">${warnSvg} Remix</span>`;
+            }
+
+            // Instrumental
+            if (t.isInstrumental) {
+                flagsHtml += `<span class="detail-flag flag-yes">${checkSvg} Instrumental</span>`;
+            }
+
+            // AI usage
+            if (t.aiUsage === 'predominantly') {
+                flagsHtml += `<span class="detail-flag flag-warn">${warnSvg} AI (Predominantly)</span>`;
+            } else if (t.aiUsage === 'not_predominantly') {
+                flagsHtml += `<span class="detail-flag flag-caution">${warnSvg} AI (Not Predominantly)</span>`;
+            } else {
+                flagsHtml += `<span class="detail-flag flag-yes">${checkSvg} No AI</span>`;
+            }
+
+            // Exclusive
+            if (t.isExclusive) {
+                flagsHtml += `<span class="detail-flag flag-yes">${checkSvg} Exclusive</span>`;
+            } else {
+                flagsHtml += `<span class="detail-flag flag-no">${xSvg} Not Exclusive</span>`;
+            }
+
+            // Samples
+            if (t.samplesCleared) {
+                flagsHtml += `<span class="detail-flag flag-yes">${checkSvg} Samples Cleared</span>`;
+            } else {
+                flagsHtml += `<span class="detail-flag flag-warn">${warnSvg} Samples Not Cleared</span>`;
+            }
+
+            document.getElementById('detailFlagsList').innerHTML = flagsHtml;
         }
 
         function updateNowPlaying(id) {
