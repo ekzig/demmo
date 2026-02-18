@@ -342,112 +342,161 @@
             letter-spacing: -0.02em;
         }
 
-        .page-count {
-            font-size: 11px;
-            color: var(--text-tertiary);
-        }
-
-        .filter-tabs {
-            display: flex;
-            gap: 4px;
-            background: var(--bg-tertiary);
-            border-radius: 10px;
-            padding: 3px;
-            border: 1px solid var(--border);
-        }
-
-        .filter-tab {
-            padding: 6px 14px;
-            border-radius: 7px;
-            font-size: 12px;
-            font-weight: 500;
-            color: var(--text-secondary);
-            cursor: pointer;
-            transition: all 0.15s ease;
-            border: none;
-            background: none;
-        }
-
-        .filter-tab:hover {
-            color: var(--text-primary);
-        }
-
-        .filter-tab.active {
-            background: var(--bg-hover);
-            color: var(--text-primary);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
-        }
-
         /* ===== OVERVIEW STRIP ===== */
         .overview-strip {
-            padding: 14px 28px;
+            padding: 0 28px;
             border-bottom: 1px solid var(--border);
             background: var(--bg-primary);
             display: flex;
-            align-items: center;
+            align-items: stretch;
             justify-content: space-between;
             flex-shrink: 0;
-            gap: 32px;
         }
 
-        .overview-left {
+        /* Pipeline stage tabs */
+        .stage-pipeline {
             display: flex;
-            flex-direction: column;
+            align-items: stretch;
+            gap: 0;
+        }
+
+        .stage-tab {
+            display: flex;
+            align-items: center;
             gap: 8px;
-            min-width: 0;
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            position: relative;
+            border: none;
+            background: none;
+            white-space: nowrap;
         }
 
-        .overview-stats {
-            display: flex;
-            gap: 20px;
+        .stage-tab::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: transparent;
+            transition: background 0.15s ease;
         }
 
-        .overview-stat {
-            display: flex;
-            align-items: baseline;
-            gap: 5px;
+        .stage-tab:hover {
+            background: rgba(255,255,255,0.02);
         }
 
-        .overview-stat-value {
-            font-size: 15px;
+        .stage-tab.active::after {
+            background: var(--pink);
+        }
+
+        .stage-tab-label {
+            font-size: 11px;
             font-weight: 600;
-            letter-spacing: -0.01em;
-        }
-
-        .overview-stat-label {
-            font-size: 10px;
-            font-weight: 500;
-            letter-spacing: 0.04em;
+            letter-spacing: 0.06em;
             text-transform: uppercase;
             color: var(--text-tertiary);
+            transition: color 0.15s ease;
         }
 
-        .overview-progress {
+        .stage-tab:hover .stage-tab-label {
+            color: var(--text-secondary);
+        }
+
+        .stage-tab.active .stage-tab-label {
+            color: var(--text-primary);
+        }
+
+        .stage-tab-count {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 600;
+            min-width: 20px;
+            height: 20px;
             display: flex;
-            height: 3px;
-            border-radius: 2px;
-            overflow: hidden;
-            width: 100%;
-            background: rgba(255,255,255,0.04);
-            gap: 1px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            padding: 0 6px;
+            transition: all 0.15s ease;
         }
 
-        .overview-progress-seg {
-            height: 100%;
-            border-radius: 1px;
-            transition: width 0.3s ease;
+        .stage-tab[data-filter="new"] .stage-tab-count {
+            background: var(--pink-glow);
+            color: var(--pink);
+            border: 1px solid var(--pink-border);
+        }
+        .stage-tab[data-filter="shortlisted"] .stage-tab-count {
+            background: var(--gold-glow);
+            color: var(--gold);
+            border: 1px solid var(--gold-border);
+        }
+        .stage-tab[data-filter="accepted"] .stage-tab-count {
+            background: var(--mint-glow);
+            color: var(--mint);
+            border: 1px solid var(--mint-border);
+        }
+        .stage-tab[data-filter="declined"] .stage-tab-count {
+            background: rgba(255,255,255,0.04);
+            color: var(--text-tertiary);
+            border: 1px solid var(--border);
+        }
+
+        .stage-tab-count:empty {
+            display: none;
+        }
+
+        /* Arrow separators between pipeline stages */
+        .stage-arrow {
+            display: flex;
+            align-items: center;
+            color: rgba(255,255,255,0.12);
+            font-size: 10px;
+            flex-shrink: 0;
+            padding: 0 2px;
+        }
+
+        .stage-arrow svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        /* Declined separator (dotted/dashed to show it's out of the main flow) */
+        .stage-divider {
+            display: flex;
+            align-items: center;
+            padding: 0 6px;
+            flex-shrink: 0;
+        }
+
+        .stage-divider::before {
+            content: '';
+            width: 1px;
+            height: 20px;
+            background: var(--border);
+        }
+
+        /* Overview right section */
+        .overview-right {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-shrink: 0;
+            padding: 8px 0;
         }
 
         .overview-context {
             display: flex;
             flex-direction: column;
-            align-items: center;
-            gap: 2px;
+            align-items: flex-end;
+            gap: 1px;
             flex-shrink: 0;
         }
 
         .overview-context-label {
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 500;
             color: var(--text-secondary);
         }
@@ -455,10 +504,6 @@
         .overview-context-sub {
             font-size: 10px;
             color: var(--text-tertiary);
-        }
-
-        .overview-right {
-            flex-shrink: 0;
         }
 
         .overview-sort {
@@ -1414,44 +1459,6 @@
             padding-left: 16px;
         }
 
-        /* ===== NOW-PLAYING ACTION STRIP ===== */
-        .np-actions {
-            display: none;
-            align-items: center;
-            gap: 6px;
-            margin-left: auto;
-            border-left: 1px solid var(--border);
-            padding-left: 16px;
-        }
-
-        .np-action-btn {
-            height: 28px;
-            padding: 0 10px;
-            border-radius: 7px;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 11px;
-            font-weight: 500;
-            border: 1px solid;
-            cursor: pointer;
-            transition: background 0.15s ease;
-            white-space: nowrap;
-        }
-
-        .np-action-btn svg {
-            width: 11px;
-            height: 11px;
-            flex-shrink: 0;
-        }
-
-        .np-decline  { background: var(--peach-glow); border-color: var(--peach-border); color: var(--peach); }
-        .np-decline:hover  { background: rgba(252,165,165,0.2); }
-        .np-shortlist{ background: var(--gold-glow);  border-color: var(--gold-border);  color: var(--gold);  }
-        .np-shortlist:hover{ background: rgba(252,211,77,0.2);  }
-        .np-accept   { background: var(--mint-glow);  border-color: var(--mint-border);  color: var(--mint);  }
-        .np-accept:hover   { background: rgba(110,231,183,0.2); }
-
         .shortcut-item {
             display: flex;
             align-items: center;
@@ -1870,7 +1877,6 @@
                 <div class="nav-item active">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.25 13.5h3.86a2.25 2.25 0 012.012 1.244l.256.512a2.25 2.25 0 002.013 1.244h3.218a2.25 2.25 0 002.013-1.244l.256-.512a2.25 2.25 0 012.013-1.244h3.859m-19.5.338V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18v-4.162c0-.224-.034-.447-.1-.661L19.24 5.338a2.25 2.25 0 00-2.15-1.588H6.911a2.25 2.25 0 00-2.15 1.588L2.35 13.177a2.25 2.25 0 00-.1.661z"/></svg>
                     My Assignments
-                    <span class="nav-count" id="navCountAssign">7</span>
                 </div>
                 <div class="nav-item">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
@@ -1918,15 +1924,8 @@
             <div class="top-bar">
                 <div class="page-header">
                     <h1 class="page-title">My Assignments</h1>
-                    <span class="page-count mono" id="pageCount">7 new</span>
                 </div>
                 <div class="top-bar-right">
-                    <div class="filter-tabs">
-                        <button class="filter-tab active" data-filter="new">New</button>
-                        <button class="filter-tab" data-filter="shortlisted">Shortlisted</button>
-                        <button class="filter-tab" data-filter="accepted">Accepted</button>
-                        <button class="filter-tab" data-filter="declined">Declined</button>
-                    </div>
                     <div class="top-bar-user">
                         <div class="user-avatar">AB</div>
                         <div class="user-info">
@@ -1940,32 +1939,32 @@
 
             <!-- Overview Strip (focus anchor) -->
             <div class="overview-strip" id="overviewStrip">
-                <div class="overview-left">
-                    <div class="overview-stats">
-                        <div class="overview-stat">
-                            <span class="overview-stat-value" id="ovNew" style="color:var(--pink)">0</span>
-                            <span class="overview-stat-label">New</span>
-                        </div>
-                        <div class="overview-stat">
-                            <span class="overview-stat-value" id="ovShortlisted" style="color:var(--gold)">0</span>
-                            <span class="overview-stat-label">Shortlisted</span>
-                        </div>
-                        <div class="overview-stat">
-                            <span class="overview-stat-value" id="ovAccepted" style="color:var(--mint)">0</span>
-                            <span class="overview-stat-label">Accepted</span>
-                        </div>
-                        <div class="overview-stat">
-                            <span class="overview-stat-value" id="ovDeclined" style="color:var(--text-tertiary)">0</span>
-                            <span class="overview-stat-label">Declined</span>
-                        </div>
-                    </div>
-                    <div class="overview-progress" id="overviewProgress"></div>
-                </div>
-                <div class="overview-context">
-                    <div class="overview-context-label" id="ovImprint">Enhanced Music · All Imprints</div>
-                    <div class="overview-context-sub" id="ovBatch">0 demos · Feb 2026</div>
+                <div class="stage-pipeline">
+                    <button class="stage-tab active" data-filter="new">
+                        <span class="stage-tab-label">New</span>
+                        <span class="stage-tab-count" id="stageNew">7</span>
+                    </button>
+                    <div class="stage-arrow"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></div>
+                    <button class="stage-tab" data-filter="shortlisted">
+                        <span class="stage-tab-label">Shortlisted</span>
+                        <span class="stage-tab-count" id="stageShortlisted"></span>
+                    </button>
+                    <div class="stage-arrow"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></div>
+                    <button class="stage-tab" data-filter="accepted">
+                        <span class="stage-tab-label">Accepted</span>
+                        <span class="stage-tab-count" id="stageAccepted"></span>
+                    </button>
+                    <div class="stage-divider"></div>
+                    <button class="stage-tab" data-filter="declined">
+                        <span class="stage-tab-label">Declined</span>
+                        <span class="stage-tab-count" id="stageDeclined"></span>
+                    </button>
                 </div>
                 <div class="overview-right">
+                    <div class="overview-context">
+                        <div class="overview-context-label" id="ovImprint">Enhanced Music · All Imprints</div>
+                        <div class="overview-context-sub" id="ovBatch">0 demos · Feb 2026</div>
+                    </div>
                     <div class="overview-sort" id="overviewSort">
                         <button class="overview-sort-btn" id="sortBtn">
                             Sort: <span id="sortCurrent">Newest</span>
@@ -2148,20 +2147,6 @@
                 <span class="shortcut-item"><span class="shortcut-key">&uarr;</span><span class="shortcut-key">&darr;</span> Nav</span>
                 <span class="shortcut-item"><span class="shortcut-key">&larr;</span><span class="shortcut-key">&rarr;</span> ±15s</span>
                 <span class="shortcut-item"><span class="shortcut-key">D</span> <span class="shortcut-key">S</span> <span class="shortcut-key">A</span> Actions</span>
-            </div>
-            <div class="np-actions" id="npActions">
-                <button class="np-action-btn np-decline" id="npDecline" title="Decline (D)">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-                    Decline <span class="confirm-kbd">D</span>
-                </button>
-                <button class="np-action-btn np-shortlist" id="npShortlist" title="Shortlist (S)">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
-                    Shortlist <span class="confirm-kbd">S</span>
-                </button>
-                <button class="np-action-btn np-accept" id="npAccept" title="Accept (A)">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                    Accept <span class="confirm-kbd">A</span>
-                </button>
             </div>
         </div>
     </div>
@@ -3015,43 +3000,20 @@
             const acceptedCount   = tracks.filter(t => t.status === 'accepted').length;
             const declinedCount   = tracks.filter(t => t.status === 'declined').length;
 
-            // Page header count reflects current filter
-            const filterCount = tracks.filter(t => t.status === currentFilter).length;
-            const filterLabel = currentFilter === 'new' ? 'new'
-                              : currentFilter === 'shortlisted' ? 'shortlisted'
-                              : currentFilter === 'accepted' ? 'accepted'
-                              : currentFilter === 'declined' ? 'declined'
-                              : currentFilter;
-            document.querySelector('.page-count').textContent = `${filterCount} ${filterLabel}`;
-
             // Sidebar nav counts
-            const navAssign = document.getElementById('navCountAssign');
             const navShort  = document.getElementById('navCountShort');
             const navAccept = document.getElementById('navCountAccept');
-            if (navAssign) navAssign.textContent = newCount;
             if (navShort)  navShort.textContent  = shortlistCount || '';
             if (navAccept) navAccept.textContent  = acceptedCount || '';
 
-            // Overview strip stats
-            document.getElementById('ovNew').textContent = newCount;
-            document.getElementById('ovShortlisted').textContent = shortlistCount;
-            document.getElementById('ovAccepted').textContent = acceptedCount;
-            document.getElementById('ovDeclined').textContent = declinedCount;
-
-            // Stacked progress bar
-            const total = tracks.length;
-            const prog = document.getElementById('overviewProgress');
-            if (total > 0) {
-                prog.innerHTML =
-                    (newCount ? `<div class="overview-progress-seg" style="width:${newCount/total*100}%;background:var(--pink)"></div>` : '') +
-                    (shortlistCount ? `<div class="overview-progress-seg" style="width:${shortlistCount/total*100}%;background:var(--gold)"></div>` : '') +
-                    (acceptedCount ? `<div class="overview-progress-seg" style="width:${acceptedCount/total*100}%;background:var(--mint)"></div>` : '') +
-                    (declinedCount ? `<div class="overview-progress-seg" style="width:${declinedCount/total*100}%;background:rgba(255,255,255,0.15)"></div>` : '');
-            } else {
-                prog.innerHTML = '';
-            }
+            // Stage pipeline tab counts
+            document.getElementById('stageNew').textContent = newCount || '';
+            document.getElementById('stageShortlisted').textContent = shortlistCount || '';
+            document.getElementById('stageAccepted').textContent = acceptedCount || '';
+            document.getElementById('stageDeclined').textContent = declinedCount || '';
 
             // Batch context
+            const total = tracks.length;
             const now = new Date();
             const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
             document.getElementById('ovBatch').textContent = `${total} demos · ${monthNames[now.getMonth()]} ${now.getFullYear()}`;
@@ -3213,15 +3175,15 @@
             });
         });
 
-        // ===== FILTER TABS =====
-        document.querySelectorAll('.filter-tab').forEach(tab => {
+        // ===== STAGE PIPELINE TABS =====
+        document.querySelectorAll('.stage-tab').forEach(tab => {
             tab.addEventListener('click', () => {
-                document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.stage-tab').forEach(t => t.classList.remove('active'));
                 tab.classList.add('active');
                 currentFilter = tab.dataset.filter;
                 focusedIndex = 0;
                 // Update empty state text to match current tab
-                const label = tab.textContent.trim().toLowerCase();
+                const label = tab.querySelector('.stage-tab-label').textContent.trim().toLowerCase();
                 document.querySelector('.empty-title').textContent = `No ${label} demos`;
                 document.querySelector('.empty-desc').textContent = `Demos you mark as "${label}" will appear here.`;
                 renderTracks();
@@ -3278,27 +3240,10 @@
             }
         }
 
-        // Show/hide bottom bar action strip
-        const npActions = document.getElementById('npActions');
-        const npShortcutsEl = document.getElementById('npShortcuts');
-
+        // Update bottom bar state
         function updateNPActions() {
-            const playing = playingId !== null && !audioEl.paused;
-            npActions.style.display = playing ? 'flex' : 'none';
-            npShortcutsEl.style.display = playing ? 'none' : 'flex';
             updateHeroVisibility();
         }
-
-        // Wire bottom-bar action buttons to current playing track
-        document.getElementById('npDecline').addEventListener('click', () => {
-            if (playingId !== null) showConfirm('decline', playingId);
-        });
-        document.getElementById('npShortlist').addEventListener('click', () => {
-            if (playingId !== null) doAction('shortlist', playingId);
-        });
-        document.getElementById('npAccept').addEventListener('click', () => {
-            if (playingId !== null) showConfirm('accept', playingId);
-        });
 
         // Detail panel action buttons
         document.getElementById('detailDecline').addEventListener('click', () => {
