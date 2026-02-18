@@ -502,10 +502,16 @@
             display: none;
         }
 
-        /* Declined — extra gap to separate from main flow */
+        /* Declined — reversed skew to break from main flow */
         .stage-tab[data-filter="declined"] {
-            margin-left: 14px;
-            opacity: 0.6;
+            margin-left: 20px;
+            transform: skewX(12deg);
+            opacity: 0.5;
+            border-right: none;
+        }
+
+        .stage-tab[data-filter="declined"] .stage-tab-inner {
+            transform: skewX(-12deg);
         }
 
         .stage-tab[data-filter="declined"]:hover,
