@@ -2107,50 +2107,38 @@
             ctx.scale(dpr, dpr);
             ctx.clearRect(0, 0, w, h);
 
-            const n = peaks.length;
-            const centerY = h / 2;
+            const numBars = peaks.length;
+            const gap = 1;
+            const barWidth = Math.max(1.5, (w - gap * (numBars - 1)) / numBars);
             const playedX = (playedPct / 100) * w;
+            const centerY = h / 2;
+            const radius = Math.min(barWidth / 2, 1.5);
 
-            // Build the waveform as a solid filled polygon path
-            // Top half: trace left→right along the upper edge
-            // Bottom half: trace right→left along the lower edge
-            function buildWavePath() {
+            // Pre-create gradients
+            const playedGrad = createWaveGradient(ctx, h, 1.0);
+            const unplayedGrad = createWaveGradient(ctx, h, 0.3);
+
+            for (let i = 0; i < numBars; i++) {
+                const x = i * (barWidth + gap);
+                const peak = peaks[i];
+                const halfH = Math.max(0.5, peak * centerY * 0.93);
+                const barH = halfH * 2;
+                const y = centerY - halfH;
+
+                ctx.fillStyle = (x + barWidth <= playedX) ? playedGrad : unplayedGrad;
+
+                // Rounded rect bar
                 ctx.beginPath();
-                // Upper edge (left to right)
-                for (let i = 0; i <= n; i++) {
-                    const idx = Math.min(i, n - 1);
-                    const x = (i / n) * w;
-                    const amp = peaks[idx] * centerY * 0.95;
-                    const y = centerY - amp;
-                    if (i === 0) ctx.moveTo(x, y);
-                    else ctx.lineTo(x, y);
-                }
-                // Lower edge (right to left, mirrored)
-                for (let i = n; i >= 0; i--) {
-                    const idx = Math.min(i, n - 1);
-                    const x = (i / n) * w;
-                    const amp = peaks[idx] * centerY * 0.95;
-                    const y = centerY + amp;
-                    ctx.lineTo(x, y);
-                }
-                ctx.closePath();
-            }
-
-            // Draw unplayed (full waveform, dimmed)
-            buildWavePath();
-            ctx.fillStyle = createWaveGradient(ctx, h, 0.3);
-            ctx.fill();
-
-            // Draw played portion (clipped to playedX)
-            if (playedX > 0) {
-                ctx.save();
-                ctx.beginPath();
-                ctx.rect(0, 0, playedX, h);
-                ctx.clip();
-                buildWavePath();
-                ctx.fillStyle = createWaveGradient(ctx, h, 1.0);
+                ctx.moveTo(x + radius, y);
+                ctx.lineTo(x + barWidth - radius, y);
+                ctx.quadraticCurveTo(x + barWidth, y, x + barWidth, y + radius);
+                ctx.lineTo(x + barWidth, y + barH - radius);
+                ctx.quadraticCurveTo(x + barWidth, y + barH, x + barWidth - radius, y + barH);
+                ctx.lineTo(x + radius, y + barH);
+                ctx.quadraticCurveTo(x, y + barH, x, y + barH - radius);
+                ctx.lineTo(x, y + radius);
+                ctx.quadraticCurveTo(x, y, x + radius, y);
                 ctx.fill();
-                ctx.restore();
             }
         }
 
@@ -2167,27 +2155,29 @@
         }
 
         // Current waveform state (hero only — bottom bar uses simple progress line)
-        let currentHeroPeaks = null;
+        let currentHeroPeaks = null;      // target peaks (what we're animating toward)
+        let displayHeroPeaks = null;      // what's currently drawn (animates toward target)
         let currentPlayedPct = 0;
+        let waveAnimRAF = null;
 
-        // Calculate bar count based on container width — 1 bar per pixel
+        // Calculate bar count — ~2.5px bar + 1px gap = 3.5px per bar
         function getBarCount(containerId) {
             const el = document.getElementById(containerId);
-            if (!el) return 400;
+            if (!el) return 200;
             const w = el.getBoundingClientRect().width || 600;
-            return Math.max(200, Math.floor(w));
+            return Math.max(100, Math.floor(w / 3.5));
         }
 
         async function loadWaveformForTrack(trackId) {
             const t = tracks.find(tr => tr.id === trackId);
             if (!t) return;
 
-            // 1 bar per pixel for dense solid look
             const heroBars = getBarCount('npHeroWaveform');
 
-            // Show generated fallback immediately
+            // Set target peaks and start animation from zero
             currentHeroPeaks = generateFallbackPeaks(heroBars, trackId);
-            redrawWaveforms();
+            displayHeroPeaks = new Float32Array(heroBars); // start from 0
+            startWaveAnimation();
 
             // Then try to decode real audio data and upgrade
             try {
@@ -2198,10 +2188,48 @@
                 }
                 const fullPeaks = waveformDataCache[cacheKey];
                 currentHeroPeaks = downsamplePeaks(fullPeaks, heroBars);
-                redrawWaveforms();
+                // Animation already running — it will lerp toward new target
             } catch (e) {
                 console.warn('Waveform decode failed, using fallback:', e.message);
             }
+        }
+
+        // Animate bars rising from 0 to target — eased lerp
+        function startWaveAnimation() {
+            if (waveAnimRAF) cancelAnimationFrame(waveAnimRAF);
+            let settled = false;
+
+            function animTick() {
+                if (!currentHeroPeaks || !displayHeroPeaks) return;
+
+                // If bar count changed (e.g. resize), reallocate
+                if (displayHeroPeaks.length !== currentHeroPeaks.length) {
+                    displayHeroPeaks = new Float32Array(currentHeroPeaks.length);
+                }
+
+                settled = true;
+                const speed = 0.08; // lerp factor — lower = slower/smoother
+                for (let i = 0; i < currentHeroPeaks.length; i++) {
+                    const target = currentHeroPeaks[i];
+                    const current = displayHeroPeaks[i];
+                    const diff = target - current;
+                    if (Math.abs(diff) > 0.001) {
+                        displayHeroPeaks[i] = current + diff * speed;
+                        settled = false;
+                    } else {
+                        displayHeroPeaks[i] = target;
+                    }
+                }
+
+                redrawWaveforms();
+
+                if (!settled) {
+                    waveAnimRAF = requestAnimationFrame(animTick);
+                } else {
+                    waveAnimRAF = null;
+                }
+            }
+            waveAnimRAF = requestAnimationFrame(animTick);
         }
 
         function downsamplePeaks(source, target) {
@@ -2221,9 +2249,10 @@
         }
 
         function redrawWaveforms() {
-            if (currentHeroPeaks) {
+            const peaks = displayHeroPeaks || currentHeroPeaks;
+            if (peaks) {
                 const canvas = ensureCanvas('npHeroWaveform');
-                drawWaveform(canvas, currentHeroPeaks, currentPlayedPct);
+                drawWaveform(canvas, peaks, currentPlayedPct);
             }
         }
 
