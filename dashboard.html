@@ -547,72 +547,6 @@
             color: var(--text-tertiary);
         }
 
-        .overview-sort {
-            position: relative;
-        }
-
-        .overview-sort-btn {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 10px;
-            border-radius: 7px;
-            border: 1px solid var(--border);
-            background: var(--bg-tertiary);
-            color: var(--text-secondary);
-            font-size: 11px;
-            cursor: pointer;
-            transition: all 0.15s ease;
-            white-space: nowrap;
-        }
-
-        .overview-sort-btn:hover {
-            border-color: var(--border-hover);
-            background: var(--bg-hover);
-            color: var(--text-primary);
-        }
-
-        .overview-sort-btn span {
-            color: var(--text-primary);
-            font-weight: 500;
-        }
-
-        .overview-sort-dropdown {
-            display: none;
-            position: absolute;
-            top: calc(100% + 4px);
-            right: 0;
-            min-width: 140px;
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border-hover);
-            border-radius: 10px;
-            padding: 4px;
-            z-index: 100;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
-        }
-
-        .overview-sort-dropdown.open {
-            display: block;
-        }
-
-        .sort-option {
-            padding: 7px 10px;
-            border-radius: 6px;
-            font-size: 12px;
-            color: var(--text-secondary);
-            cursor: pointer;
-            transition: all 0.1s ease;
-        }
-
-        .sort-option:hover {
-            background: var(--bg-hover);
-            color: var(--text-primary);
-        }
-
-        .sort-option.active {
-            color: var(--pink);
-            background: var(--pink-glow);
-        }
 
         /* ===== NOW PLAYING BAR ===== */
         .now-playing-bar {
@@ -1112,21 +1046,42 @@
             letter-spacing: 0.1em;
             text-transform: uppercase;
             color: var(--text-tertiary);
-            cursor: pointer;
             display: flex;
             align-items: center;
             gap: 4px;
             user-select: none;
         }
 
-        .col-header:hover {
+        .col-header[data-sort] {
+            cursor: pointer;
+        }
+
+        .col-header[data-sort]:hover {
             color: var(--text-secondary);
         }
 
-        .col-header svg {
+        .col-header .sort-arrow {
             width: 10px;
             height: 10px;
-            opacity: 0.4;
+            opacity: 0;
+            transition: all 0.15s ease;
+            flex-shrink: 0;
+        }
+
+        .col-header[data-sort]:hover .sort-arrow {
+            opacity: 0.3;
+        }
+
+        .col-header.sort-active {
+            color: var(--text-primary);
+        }
+
+        .col-header.sort-active .sort-arrow {
+            opacity: 0.8;
+        }
+
+        .col-header.sort-active.sort-desc .sort-arrow {
+            transform: rotate(180deg);
         }
 
         /* ===== TRACK ROW ===== */
@@ -1989,17 +1944,6 @@
                         <div class="overview-context-label" id="ovImprint">Enhanced Music · All Imprints</div>
                         <div class="overview-context-sub" id="ovBatch">0 demos · Feb 2026</div>
                     </div>
-                    <div class="overview-sort" id="overviewSort">
-                        <button class="overview-sort-btn" id="sortBtn">
-                            Sort: <span id="sortCurrent">Newest</span>
-                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width:12px;height:12px;opacity:0.5;flex-shrink:0"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-                        </button>
-                        <div class="overview-sort-dropdown" id="sortDropdown">
-                            <div class="sort-option active" data-sort="newest">Newest</div>
-                            <div class="sort-option" data-sort="popularity">Popularity</div>
-                            <div class="sort-option" data-sort="genre">Genre</div>
-                        </div>
-                    </div>
                 </div>
             </div>
 
@@ -2012,16 +1956,25 @@
 
             <!-- Track list -->
             <div class="track-list-header">
-                <div class="col-header">
+                <div class="col-header sort-active" data-sort="artist">
                     Artist / Track
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    <svg class="sort-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/></svg>
                 </div>
-                <div class="col-header">Popularity</div>
-                <div class="col-header">Genre</div>
-                <div class="col-header">Imprint</div>
-                <div class="col-header">
+                <div class="col-header" data-sort="popularity">
+                    Popularity
+                    <svg class="sort-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/></svg>
+                </div>
+                <div class="col-header" data-sort="genre">
+                    Genre
+                    <svg class="sort-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/></svg>
+                </div>
+                <div class="col-header" data-sort="imprint">
+                    Imprint
+                    <svg class="sort-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/></svg>
+                </div>
+                <div class="col-header" data-sort="date">
                     Submitted
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/></svg>
+                    <svg class="sort-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/></svg>
                 </div>
                 <div class="col-header" style="justify-content: flex-end;">Actions</div>
             </div>
@@ -2258,7 +2211,8 @@
         let focusedIndex = 0;
         let playingId = null;
         let currentFilter = 'new';
-        let currentSort = 'newest';
+        let currentSort = 'artist';
+        let sortDirection = 'asc';
         const trackList = document.getElementById('trackList');
         const emptyState = document.getElementById('emptyState');
         const toast = document.getElementById('toast');
@@ -2643,12 +2597,19 @@
         function renderTracks() {
             let visible = tracks.filter(t => t.status === currentFilter);
             // Apply sort
-            if (currentSort === 'popularity') {
-                visible = visible.slice().sort((a, b) => (b.followers || 0) - (a.followers || 0));
+            const dir = sortDirection === 'asc' ? 1 : -1;
+            if (currentSort === 'artist') {
+                visible = visible.slice().sort((a, b) => dir * a.artist.localeCompare(b.artist));
+            } else if (currentSort === 'popularity') {
+                visible = visible.slice().sort((a, b) => dir * ((a.followers || 0) - (b.followers || 0)));
             } else if (currentSort === 'genre') {
-                visible = visible.slice().sort((a, b) => a.genre.localeCompare(b.genre));
+                visible = visible.slice().sort((a, b) => dir * a.genre.localeCompare(b.genre));
+            } else if (currentSort === 'imprint') {
+                visible = visible.slice().sort((a, b) => dir * a.imprint.localeCompare(b.imprint));
+            } else if (currentSort === 'date') {
+                // Keep original array order as proxy for date (newest first = desc)
+                if (sortDirection === 'desc') visible = visible.slice().reverse();
             }
-            // 'newest' = default order (as defined in tracks array)
             const maxFollowers = Math.max(...tracks.map(t => t.followers || 0));
             if (visible.length === 0) {
                 trackList.innerHTML = '';
@@ -3169,25 +3130,28 @@
         });
         document.addEventListener('click', () => {
             document.getElementById('imprintDropdown').classList.remove('open');
-            document.getElementById('sortDropdown').classList.remove('open');
         });
 
-        // ===== SORT DROPDOWN =====
-        document.getElementById('sortBtn').addEventListener('click', (e) => {
-            e.stopPropagation();
-            document.getElementById('sortDropdown').classList.toggle('open');
-        });
-        document.querySelectorAll('.sort-option').forEach(opt => {
-            opt.addEventListener('click', (e) => {
-                e.stopPropagation();
-                document.querySelectorAll('.sort-option').forEach(o => o.classList.remove('active'));
-                opt.classList.add('active');
-                currentSort = opt.dataset.sort;
-                document.getElementById('sortCurrent').textContent = opt.textContent;
-                document.getElementById('sortDropdown').classList.remove('open');
+        // ===== SORTABLE COLUMN HEADERS =====
+        document.querySelectorAll('.col-header[data-sort]').forEach(col => {
+            col.addEventListener('click', () => {
+                const sort = col.dataset.sort;
+                if (currentSort === sort) {
+                    // Toggle direction
+                    sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+                } else {
+                    currentSort = sort;
+                    // Smart defaults: popularity desc, everything else asc
+                    sortDirection = sort === 'popularity' ? 'desc' : 'asc';
+                }
+                // Update header visuals
+                document.querySelectorAll('.col-header').forEach(c => {
+                    c.classList.remove('sort-active', 'sort-desc');
+                });
+                col.classList.add('sort-active');
+                if (sortDirection === 'desc') col.classList.add('sort-desc');
                 focusedIndex = 0;
                 renderTracks();
-                // Update detail panel to first track after re-sort
                 const visible = tracks.filter(t => t.status === currentFilter);
                 updateDetailPanel(visible.length > 0 ? visible[0].id : null);
             });
