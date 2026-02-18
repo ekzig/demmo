@@ -2005,14 +2005,18 @@
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         const waveformDataCache = {}; // trackId -> Float32Array of peaks
 
-        // Vertical gradient for waveform: warm orange (top) → pink (mid) → purple (bottom)
-        function createWaveGradient(ctx, h, alpha) {
+        // Exact gradient from reference CSS:
+        // rgba(255,178,54,0.4) 0%, rgba(255,154,158,0.5) 25%,
+        // rgba(253,121,168,0.6) 50%, rgba(168,85,247,0.7) 75%,
+        // rgba(147,51,234,0.6) 100%  + mix-blend-mode: overlay
+        function createWaveGradient(ctx, h, opacity) {
             const grad = ctx.createLinearGradient(0, 0, 0, h);
-            grad.addColorStop(0,    `rgba(230, 140, 90, ${alpha})`);   // warm orange
-            grad.addColorStop(0.3,  `rgba(235, 120, 140, ${alpha})`);  // salmon-pink
-            grad.addColorStop(0.55, `rgba(210, 110, 180, ${alpha})`);  // hot pink
-            grad.addColorStop(0.8,  `rgba(170, 100, 200, ${alpha})`);  // purple
-            grad.addColorStop(1,    `rgba(140, 90, 210, ${alpha})`);   // deep purple
+            const a = opacity;
+            grad.addColorStop(0,    `rgba(255, 178, 54, ${a})`);    // warm orange
+            grad.addColorStop(0.25, `rgba(255, 154, 158, ${a})`);   // salmon-pink
+            grad.addColorStop(0.5,  `rgba(253, 121, 168, ${a})`);   // hot pink
+            grad.addColorStop(0.75, `rgba(168, 85, 247, ${a})`);    // purple
+            grad.addColorStop(1,    `rgba(147, 51, 234, ${a})`);    // deep purple
             return grad;
         }
 
@@ -2103,30 +2107,50 @@
             ctx.scale(dpr, dpr);
             ctx.clearRect(0, 0, w, h);
 
-            const numBars = peaks.length;
-            // Nearly pixel-width bars with no visible gap — looks solid
-            const barWidth = w / numBars;
-            const playedX = (playedPct / 100) * w;
+            const n = peaks.length;
             const centerY = h / 2;
+            const playedX = (playedPct / 100) * w;
 
-            // Create vertical gradients (top→bottom: orange → pink → purple)
-            const playedGrad = createWaveGradient(ctx, h, 0.95);
-            const unplayedGrad = createWaveGradient(ctx, h, 0.35);
+            // Build the waveform as a solid filled polygon path
+            // Top half: trace left→right along the upper edge
+            // Bottom half: trace right→left along the lower edge
+            function buildWavePath() {
+                ctx.beginPath();
+                // Upper edge (left to right)
+                for (let i = 0; i <= n; i++) {
+                    const idx = Math.min(i, n - 1);
+                    const x = (i / n) * w;
+                    const amp = peaks[idx] * centerY * 0.95;
+                    const y = centerY - amp;
+                    if (i === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                }
+                // Lower edge (right to left, mirrored)
+                for (let i = n; i >= 0; i--) {
+                    const idx = Math.min(i, n - 1);
+                    const x = (i / n) * w;
+                    const amp = peaks[idx] * centerY * 0.95;
+                    const y = centerY + amp;
+                    ctx.lineTo(x, y);
+                }
+                ctx.closePath();
+            }
 
-            // Draw bars growing from TOP edge down and BOTTOM edge up
-            // Loud = bars nearly meet in center; quiet = gap in center
-            for (let i = 0; i < numBars; i++) {
-                const x = i * barWidth;
-                const peak = peaks[i];
-                // How far each bar extends from its edge toward center
-                const barH = Math.max(1, peak * centerY * 0.95);
+            // Draw unplayed (full waveform, dimmed)
+            buildWavePath();
+            ctx.fillStyle = createWaveGradient(ctx, h, 0.3);
+            ctx.fill();
 
-                ctx.fillStyle = (x + barWidth <= playedX) ? playedGrad : unplayedGrad;
-
-                // Top bar: from y=0 downward
-                ctx.fillRect(x, 0, Math.max(1, barWidth - 0.25), barH);
-                // Bottom bar: from y=h upward
-                ctx.fillRect(x, h - barH, Math.max(1, barWidth - 0.25), barH);
+            // Draw played portion (clipped to playedX)
+            if (playedX > 0) {
+                ctx.save();
+                ctx.beginPath();
+                ctx.rect(0, 0, playedX, h);
+                ctx.clip();
+                buildWavePath();
+                ctx.fillStyle = createWaveGradient(ctx, h, 1.0);
+                ctx.fill();
+                ctx.restore();
             }
         }
 
