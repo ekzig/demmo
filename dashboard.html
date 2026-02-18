@@ -507,15 +507,35 @@
 
         .progress-track {
             flex: 1;
-            height: 40px;
+            height: 20px;
             cursor: pointer;
             position: relative;
+            display: flex;
+            align-items: center;
         }
 
-        .progress-track canvas {
-            width: 100%;
-            height: 100%;
-            display: block;
+        .progress-track::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 2px;
+        }
+
+        .progress-fill {
+            width: 0%;
+            height: 4px;
+            background: var(--pink);
+            border-radius: 2px;
+            position: relative;
+            z-index: 1;
+            transition: width 0.1s linear;
+        }
+
+        .progress-track:hover .progress-fill {
+            height: 5px;
         }
 
         /* RIGHT: volume + shortcuts */
@@ -1645,7 +1665,9 @@
             </div>
             <div class="np-progress">
                 <span class="np-time np-time-current mono">0:00</span>
-                <div class="progress-track" id="progressTrack"></div>
+                <div class="progress-track" id="progressTrack">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
                 <span class="np-time np-time-total mono">0:00</span>
             </div>
         </div>
@@ -1934,9 +1956,8 @@
             return canvas;
         }
 
-        // Current waveform state
-        let currentPeaks = null;      // bottom bar peaks
-        let currentHeroPeaks = null;  // hero peaks
+        // Current waveform state (hero only — bottom bar uses simple progress line)
+        let currentHeroPeaks = null;
         let currentPlayedPct = 0;
 
         // Calculate ideal bar count based on container width for dense look
@@ -1944,7 +1965,6 @@
             const el = document.getElementById(containerId);
             if (!el) return 150;
             const w = el.getBoundingClientRect().width || 500;
-            // targetBarWidth ~2px + 0.5px gap = ~2.5px per bar
             return Math.max(80, Math.floor(w / (targetBarWidth + 0.5)));
         }
 
@@ -1952,13 +1972,11 @@
             const t = tracks.find(tr => tr.id === trackId);
             if (!t) return;
 
-            // Calculate bar counts based on actual container widths for dense look
-            const bottomBars = getBarCount('progressTrack', 2);
+            // Calculate bar count for hero waveform
             const heroBars = getBarCount('npHeroWaveform', 2);
 
-            // Show generated fallback immediately so something is always visible
-            currentPeaks = generateFallbackPeaks(bottomBars, trackId);
-            currentHeroPeaks = generateFallbackPeaks(heroBars, trackId + 1000); // different seed
+            // Show generated fallback immediately
+            currentHeroPeaks = generateFallbackPeaks(heroBars, trackId);
             redrawWaveforms();
 
             // Then try to decode real audio data and upgrade
@@ -1969,11 +1987,9 @@
                     waveformDataCache[cacheKey] = await decodeAudioPeaks(t.audio, 800);
                 }
                 const fullPeaks = waveformDataCache[cacheKey];
-                currentPeaks = downsamplePeaks(fullPeaks, bottomBars);
                 currentHeroPeaks = downsamplePeaks(fullPeaks, heroBars);
                 redrawWaveforms();
             } catch (e) {
-                // Fallback already showing, just log
                 console.warn('Waveform decode failed, using fallback:', e.message);
             }
         }
@@ -1995,18 +2011,21 @@
         }
 
         function redrawWaveforms() {
-            if (currentPeaks) {
-                const canvas = ensureCanvas('progressTrack');
-                drawWaveform(canvas, currentPeaks, currentPlayedPct);
-            }
             if (currentHeroPeaks) {
                 const canvas = ensureCanvas('npHeroWaveform');
                 drawWaveform(canvas, currentHeroPeaks, currentPlayedPct);
             }
         }
 
+        // Update bottom progress line
+        function updateProgressBar(pct) {
+            const fill = document.getElementById('progressFill');
+            if (fill) fill.style.width = pct + '%';
+        }
+
         function updateWaveformProgress(pct) {
             currentPlayedPct = pct;
+            updateProgressBar(pct);
             redrawWaveforms();
         }
 
@@ -2016,7 +2035,6 @@
         function renderHeroWaveform(id) { /* handled by loadWaveformForTrack */ }
 
         // Init
-        ensureCanvas('progressTrack');
         ensureCanvas('npHeroWaveform');
 
         // Redraw on resize
