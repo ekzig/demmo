@@ -353,43 +353,58 @@
             flex-shrink: 0;
         }
 
-        /* Pipeline stage tabs */
+        /* Pipeline stage tabs — slanted parallelogram style */
         .stage-pipeline {
             display: flex;
             align-items: stretch;
-            gap: 0;
+            gap: 3px;
+            padding: 6px 0;
         }
 
         .stage-tab {
             display: flex;
             align-items: center;
             gap: 8px;
-            padding: 12px 20px;
+            padding: 7px 18px;
             cursor: pointer;
             transition: all 0.15s ease;
             position: relative;
             border: none;
-            background: none;
+            background: rgba(255,255,255,0.03);
             white-space: nowrap;
-        }
-
-        .stage-tab::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: transparent;
-            transition: background 0.15s ease;
+            transform: skewX(-12deg);
+            border-radius: 4px;
+            border: 1px solid transparent;
         }
 
         .stage-tab:hover {
-            background: rgba(255,255,255,0.02);
+            background: rgba(255,255,255,0.06);
+            border-color: var(--border);
+        }
+
+        .stage-tab.active {
+            background: rgba(255,255,255,0.07);
+            border-color: var(--border-hover);
         }
 
         .stage-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -7px;
+            left: 20%;
+            right: 20%;
+            height: 2px;
             background: var(--pink);
+            border-radius: 1px;
+            transform: skewX(12deg);
+        }
+
+        /* Counter-skew the content so text stays upright */
+        .stage-tab-inner {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transform: skewX(12deg);
         }
 
         .stage-tab-label {
@@ -413,13 +428,13 @@
             font-family: 'JetBrains Mono', monospace;
             font-size: 10px;
             font-weight: 600;
-            min-width: 20px;
-            height: 20px;
+            min-width: 18px;
+            height: 18px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 10px;
-            padding: 0 6px;
+            border-radius: 9px;
+            padding: 0 5px;
             transition: all 0.15s ease;
         }
 
@@ -448,34 +463,15 @@
             display: none;
         }
 
-        /* Arrow separators between pipeline stages */
-        .stage-arrow {
-            display: flex;
-            align-items: center;
-            color: rgba(255,255,255,0.12);
-            font-size: 10px;
-            flex-shrink: 0;
-            padding: 0 2px;
+        /* Declined gap — extra margin to visually separate from main flow */
+        .stage-tab[data-filter="declined"] {
+            margin-left: 10px;
+            opacity: 0.7;
         }
 
-        .stage-arrow svg {
-            width: 14px;
-            height: 14px;
-        }
-
-        /* Declined separator (dotted/dashed to show it's out of the main flow) */
-        .stage-divider {
-            display: flex;
-            align-items: center;
-            padding: 0 6px;
-            flex-shrink: 0;
-        }
-
-        .stage-divider::before {
-            content: '';
-            width: 1px;
-            height: 20px;
-            background: var(--border);
+        .stage-tab[data-filter="declined"]:hover,
+        .stage-tab[data-filter="declined"].active {
+            opacity: 1;
         }
 
         /* Overview right section */
@@ -1941,23 +1937,16 @@
             <div class="overview-strip" id="overviewStrip">
                 <div class="stage-pipeline">
                     <button class="stage-tab active" data-filter="new">
-                        <span class="stage-tab-label">New</span>
-                        <span class="stage-tab-count" id="stageNew">7</span>
+                        <span class="stage-tab-inner"><span class="stage-tab-label">New</span><span class="stage-tab-count" id="stageNew">7</span></span>
                     </button>
-                    <div class="stage-arrow"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></div>
                     <button class="stage-tab" data-filter="shortlisted">
-                        <span class="stage-tab-label">Shortlisted</span>
-                        <span class="stage-tab-count" id="stageShortlisted"></span>
+                        <span class="stage-tab-inner"><span class="stage-tab-label">Shortlisted</span><span class="stage-tab-count" id="stageShortlisted"></span></span>
                     </button>
-                    <div class="stage-arrow"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></div>
                     <button class="stage-tab" data-filter="accepted">
-                        <span class="stage-tab-label">Accepted</span>
-                        <span class="stage-tab-count" id="stageAccepted"></span>
+                        <span class="stage-tab-inner"><span class="stage-tab-label">Accepted</span><span class="stage-tab-count" id="stageAccepted"></span></span>
                     </button>
-                    <div class="stage-divider"></div>
                     <button class="stage-tab" data-filter="declined">
-                        <span class="stage-tab-label">Declined</span>
-                        <span class="stage-tab-count" id="stageDeclined"></span>
+                        <span class="stage-tab-inner"><span class="stage-tab-label">Declined</span><span class="stage-tab-count" id="stageDeclined"></span></span>
                     </button>
                 </div>
                 <div class="overview-right">
