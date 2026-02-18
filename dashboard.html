@@ -369,6 +369,7 @@
             position: relative;
             border: none;
             background: transparent;
+            color: var(--text-tertiary);
             white-space: nowrap;
             transform: skewX(-12deg);
             border-radius: 0;
@@ -381,10 +382,12 @@
 
         .stage-tab:hover {
             background: rgba(255,255,255,0.03);
+            color: var(--text-secondary);
         }
 
         .stage-tab.active {
             background: rgba(255,255,255,0.05);
+            color: var(--text-primary);
         }
 
         .stage-tab.active::after {
