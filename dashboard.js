@@ -2475,6 +2475,18 @@ document.getElementById('npPlayPause').addEventListener('click', () => {
 document.getElementById('npPrev').addEventListener('click', playPrev);
 document.getElementById('npNext').addEventListener('click', playNext);
 
+// Shortcuts popup toggle
+document.getElementById('npShortcutsBtn').addEventListener('click', (e) => {
+    e.stopPropagation();
+    document.getElementById('npShortcutsPopup').classList.toggle('visible');
+});
+document.addEventListener('click', (e) => {
+    const popup = document.getElementById('npShortcutsPopup');
+    if (popup.classList.contains('visible') && !e.target.closest('.np-right')) {
+        popup.classList.remove('visible');
+    }
+});
+
 // Seek on progress bar click (bottom bar + hero)
 document.getElementById('progressTrack').addEventListener('click', (e) => {
     if (!audioEl.duration) return;

@@ -129,7 +129,21 @@
                                 </div>
                             </div>
                             <div class="dash-hero-number" id="dashValPipeline">0</div>
-                            <div class="dash-hero-caption">Demos in Pipeline</div>
+                            <div class="dash-hero-caption">Submissions in Queue</div>
+                            <div class="dash-hero-stats">
+                                <div class="dash-hero-stat">
+                                    <span class="dash-hero-stat-value" id="dashValQueue">0</span>
+                                    <span class="dash-hero-stat-label">Awaiting Review</span>
+                                </div>
+                                <div class="dash-hero-stat">
+                                    <span class="dash-hero-stat-value" id="dashValAccepted">0</span>
+                                    <span class="dash-hero-stat-label">Accepted</span>
+                                </div>
+                                <div class="dash-hero-stat">
+                                    <span class="dash-hero-stat-value" id="dashValRate">0%</span>
+                                    <span class="dash-hero-stat-label">Acceptance Rate</span>
+                                </div>
+                            </div>
                         </div>
                         <div class="dash-card dash-card-recent">
                             <div class="dash-card-header">
@@ -143,22 +157,8 @@
                         </div>
                     </div>
 
-                    <!-- Row 2: Mini stats 1/3 + Demo Volume 1/3 + Acceptance Rate 1/3 -->
+                    <!-- Row 2: Demo Volume 1/2 + Acceptance Rate 1/2 -->
                     <div class="dash-row dash-row-middle">
-                        <div class="dash-mini-stats">
-                            <div class="dash-mini-card">
-                                <div class="dash-mini-value" id="dashValQueue">0</div>
-                                <div class="dash-mini-label">Awaiting Review</div>
-                            </div>
-                            <div class="dash-mini-card">
-                                <div class="dash-mini-value" id="dashValAccepted">0</div>
-                                <div class="dash-mini-label">Accepted</div>
-                            </div>
-                            <div class="dash-mini-card">
-                                <div class="dash-mini-value" id="dashValRate">0%</div>
-                                <div class="dash-mini-label">Acceptance Rate</div>
-                            </div>
-                        </div>
                         <div class="dash-card">
                             <div class="dash-card-header">
                                 <div class="dash-card-title">Demo Volume</div>
@@ -665,40 +665,53 @@
             </div>
         </div>
 
-        <!-- CENTER: single-row transport -->
+        <!-- CENTER: two-row transport -->
         <div class="np-center">
-            <button class="np-btn" title="Previous" id="npPrev">
-                <svg fill="currentColor" viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
-            </button>
-            <button class="np-btn play-pause" id="npPlayPause">
-                <svg class="play-icon" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                <svg class="pause-icon" fill="currentColor" viewBox="0 0 24 24"><path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/></svg>
-            </button>
-            <button class="np-btn" title="Next" id="npNext">
-                <svg fill="currentColor" viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6h2v12h-2z"/></svg>
-            </button>
-            <span class="np-time np-time-current mono">0:00</span>
-            <div class="progress-track" id="progressTrack">
-                <div class="progress-fill" id="progressFill"></div>
+            <div class="np-controls-row">
+                <button class="np-btn" title="Previous" id="npPrev">
+                    <svg fill="currentColor" viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
+                </button>
+                <button class="np-btn play-pause" id="npPlayPause">
+                    <svg class="play-icon" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                    <svg class="pause-icon" fill="currentColor" viewBox="0 0 24 24"><path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/></svg>
+                </button>
+                <button class="np-btn" title="Next" id="npNext">
+                    <svg fill="currentColor" viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6h2v12h-2z"/></svg>
+                </button>
             </div>
-            <span class="np-time np-time-total mono">0:00</span>
+            <div class="np-progress-row">
+                <span class="np-time np-time-current mono">0:00</span>
+                <div class="progress-track" id="progressTrack">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <span class="np-time np-time-total mono">0:00</span>
+            </div>
+        </div>
+
+        <!-- RIGHT: volume + shortcuts -->
+        <div class="np-right">
             <div class="np-volume">
                 <svg class="icon-sm-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/></svg>
                 <div class="volume-track" id="volumeTrack">
                     <div class="volume-fill" id="volumeFill"></div>
                 </div>
             </div>
-        </div>
-
-        <!-- RIGHT: shortcuts / actions -->
-        <div class="np-right">
-            <div class="np-shortcuts" id="npShortcuts">
-                <span class="shortcut-item"><span class="shortcut-key">Space</span> Play</span>
-                <span class="shortcut-item"><span class="shortcut-key">&uarr;</span><span class="shortcut-key">&darr;</span> Nav</span>
-                <span class="shortcut-item"><span class="shortcut-key">&larr;</span><span class="shortcut-key">&rarr;</span> ±15s</span>
-                <span class="shortcut-item"><span class="shortcut-key">D</span> <span class="shortcut-key">S</span> <span class="shortcut-key">A</span> Actions</span>
-                <span class="shortcut-item"><span class="shortcut-key">R</span> Revert</span>
-                <span class="shortcut-item"><span class="shortcut-key">E</span> Details</span>
+            <button class="np-shortcuts-btn" id="npShortcutsBtn">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="14" height="14"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6.75 7.5l3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0021 18V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v12a2.25 2.25 0 002.25 2.25z"/></svg>
+                Shortcuts
+            </button>
+            <div class="np-shortcuts-popup" id="npShortcutsPopup">
+                <div class="np-shortcuts-popup-title">Keyboard Shortcuts</div>
+                <div class="np-shortcuts-popup-grid">
+                    <div class="np-shortcut-row"><span class="shortcut-key">Space</span> <span>Play / Pause</span></div>
+                    <div class="np-shortcut-row"><span class="shortcut-key">&uarr;</span> <span class="shortcut-key">&darr;</span> <span>Navigate tracks</span></div>
+                    <div class="np-shortcut-row"><span class="shortcut-key">&larr;</span> <span class="shortcut-key">&rarr;</span> <span>Seek ±15s</span></div>
+                    <div class="np-shortcut-row"><span class="shortcut-key">D</span> <span>Decline</span></div>
+                    <div class="np-shortcut-row"><span class="shortcut-key">S</span> <span>Shortlist</span></div>
+                    <div class="np-shortcut-row"><span class="shortcut-key">A</span> <span>Accept</span></div>
+                    <div class="np-shortcut-row"><span class="shortcut-key">R</span> <span>Revert action</span></div>
+                    <div class="np-shortcut-row"><span class="shortcut-key">E</span> <span>Track details</span></div>
+                </div>
             </div>
         </div>
     </div>
