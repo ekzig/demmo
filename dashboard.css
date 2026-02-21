@@ -633,10 +633,18 @@ body {
     height: 72px;
     background: var(--bg-secondary);
     border-top: 1px solid var(--border);
-    display: flex;
+    display: none;
     align-items: center;
     gap: 16px;
     flex-shrink: 0;
+}
+.now-playing-bar.visible {
+    display: flex;
+    animation: barSlideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes barSlideUp {
+    from { opacity: 0; transform: translateY(100%); }
+    to   { opacity: 1; transform: translateY(0); }
 }
 
 /* LEFT: track info — fixed width to align with sidebar edge */
@@ -3889,7 +3897,7 @@ body {
     margin-top: 8px;
     font-weight: 500;
     letter-spacing: 0.02em;
-    text-transform: uppercase;
+    text-transform: none;
 }
 
 /* Hero inline stats strip */
@@ -3911,7 +3919,7 @@ body {
     color: var(--text-primary);
 }
 .dash-hero-stat-label {
-    font-size: 11px;
+    font-size: 14px;
     color: var(--text-tertiary);
 }
 
@@ -3953,43 +3961,7 @@ body {
     padding: 12px 20px 16px;
 }
 
-/* ---- Row 2: Middle (stats + charts) ---- */
-.dash-row-middle > * {
-    flex: 1;
-    min-width: 0;
-}
-.dash-row-middle > .dash-card {
-    display: flex;
-    flex-direction: column;
-}
-.dash-row-middle > .dash-card > .dash-card-body {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.dash-chart-wrap {
-    padding: 8px 16px 12px;
-}
-
-.dash-chart-wrap canvas {
-    max-height: 180px;
-}
-
-.dash-chart-doughnut-wrap {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 12px 20px 16px;
-}
-
-.dash-chart-doughnut-wrap canvas {
-    max-width: 200px;
-    max-height: 200px;
-}
-
-/* ---- Row 3: Bottom (imprints + team) ---- */
+/* ---- Row 2: Bottom (imprints + team) ---- */
 .dash-row-bottom > * {
     flex: 1;
     min-width: 0;

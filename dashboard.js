@@ -803,6 +803,9 @@ function togglePlay(id) {
         audioEl.play().catch(() => {});
         if (playingId !== id) playingId = id;
         startProgressLoop();
+        // Show bottom bar on first play
+        const npBar = document.getElementById('nowPlayingBar');
+        if (!npBar.classList.contains('visible')) npBar.classList.add('visible');
     }
     // Sync focusedIndex so arrow keys always continue from this track
     const visible = getVisibleTracks();
@@ -2087,9 +2090,6 @@ function computeDashboardData() {
     return { counts, pipeline, queue, rate, teamCounts, unassigned, imprintCounts, genreCounts, genreColorMap, recent };
 }
 
-let chartPipeline = null;
-let chartAcceptance = null;
-
 function renderDashboard() {
     const d = computeDashboardData();
 
@@ -2108,119 +2108,6 @@ function renderDashboard() {
     document.getElementById('dashValQueue').textContent = d.queue;
     document.getElementById('dashValAccepted').textContent = d.counts.accepted;
     document.getElementById('dashValRate').textContent = d.rate + '%';
-
-    // ---- Chart.js: Pipeline bar chart ----
-    if (chartPipeline) chartPipeline.destroy();
-    const ctxBar = document.getElementById('chartPipeline');
-    chartPipeline = new Chart(ctxBar, {
-        type: 'bar',
-        data: {
-            labels: ['New', 'Shortlisted', 'Accepted', 'Declined'],
-            datasets: [{
-                data: [d.counts.new, d.counts.shortlisted, d.counts.accepted, d.counts.declined],
-                backgroundColor: ['#7dd3fc', '#fcd34d', '#6ee7b7', '#fca5a5'],
-                borderColor: ['rgba(125,211,252,0.3)', 'rgba(252,211,77,0.3)', 'rgba(110,231,183,0.3)', 'rgba(252,165,165,0.3)'],
-                borderWidth: 1,
-                borderRadius: 6,
-                borderSkipped: false,
-                barPercentage: 0.6,
-                categoryPercentage: 0.7,
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: { display: false },
-                tooltip: {
-                    backgroundColor: '#1e1e2e',
-                    titleColor: '#e0e0e0',
-                    bodyColor: '#e0e0e0',
-                    borderColor: 'rgba(255,255,255,0.08)',
-                    borderWidth: 1,
-                    cornerRadius: 8,
-                    padding: 10,
-                    callbacks: { label: (ctx) => ctx.parsed.y + ' demos' }
-                }
-            },
-            scales: {
-                x: {
-                    grid: { display: false },
-                    ticks: { color: 'rgba(255,255,255,0.4)', font: { size: 11, family: 'Inter Tight' } },
-                    border: { display: false }
-                },
-                y: {
-                    beginAtZero: true,
-                    grid: { color: 'rgba(255,255,255,0.04)' },
-                    ticks: { color: 'rgba(255,255,255,0.3)', font: { size: 10, family: 'Inter Tight' }, stepSize: 1, precision: 0 },
-                    border: { display: false }
-                }
-            }
-        }
-    });
-
-    // ---- Chart.js: Acceptance doughnut ----
-    if (chartAcceptance) chartAcceptance.destroy();
-    const ctxDoughnut = document.getElementById('chartAcceptance');
-    const accepted = d.counts.accepted;
-    const declined = d.counts.declined;
-    const total = accepted + declined;
-    // When no demos processed yet, show full gray ring
-    const chartData = total > 0 ? [accepted, declined] : [0, 0, 1];
-    const chartLabels = total > 0 ? ['Accepted', 'Declined'] : ['Accepted', 'Declined', 'No data'];
-    const chartColors = total > 0
-        ? ['#6ee7b7', '#fca5a5']
-        : ['#6ee7b7', '#fca5a5', 'rgba(255,255,255,0.06)'];
-    const chartBorders = total > 0
-        ? ['rgba(110,231,183,0.3)', 'rgba(252,165,165,0.3)']
-        : ['rgba(110,231,183,0.3)', 'rgba(252,165,165,0.3)', 'rgba(255,255,255,0.03)'];
-    chartAcceptance = new Chart(ctxDoughnut, {
-        type: 'doughnut',
-        data: {
-            labels: chartLabels,
-            datasets: [{
-                data: chartData,
-                backgroundColor: chartColors,
-                borderColor: chartBorders,
-                borderWidth: 1,
-                cutout: '72%',
-            }]
-        },
-        plugins: [{
-            id: 'centerText',
-            afterDraw(chart) {
-                const { ctx, chartArea } = chart;
-                const cx = (chartArea.left + chartArea.right) / 2;
-                const cy = (chartArea.top + chartArea.bottom) / 2;
-                ctx.save();
-                ctx.textAlign = 'center';
-                ctx.fillStyle = '#e0e0e0';
-                ctx.font = '600 28px "Inter Tight"';
-                ctx.fillText(d.rate + '%', cx, cy + 4);
-                ctx.fillStyle = 'rgba(255,255,255,0.35)';
-                ctx.font = '400 10px "Inter Tight"';
-                ctx.fillText('Accepted', cx, cy + 20);
-                ctx.restore();
-            }
-        }],
-        options: {
-            responsive: true,
-            maintainAspectRatio: true,
-            plugins: {
-                legend: { display: false },
-                tooltip: {
-                    backgroundColor: '#1e1e2e',
-                    titleColor: '#e0e0e0',
-                    bodyColor: '#e0e0e0',
-                    borderColor: 'rgba(255,255,255,0.08)',
-                    borderWidth: 1,
-                    cornerRadius: 8,
-                    padding: 10,
-                    callbacks: { label: (ctx) => ctx.label + ': ' + ctx.parsed }
-                }
-            }
-        }
-    });
 
     // ---- Team workload ----
     const teamEl = document.getElementById('dashTeam');
