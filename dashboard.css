@@ -2172,6 +2172,7 @@ body {
     display: flex;
     flex-direction: column;
     position: relative;
+    overflow: hidden;
     transform: translateY(10px);
     transition: transform 0.2s ease;
 }
