@@ -1,20 +1,20 @@
 // ===== TEAM DATA =====
-const currentUser = { id: 'user-1', name: 'Alex Reed', avatar: '../avatars/demmo-avatar-x1.webp', initials: 'AR' };
+const currentUser = { id: 'user-1', name: 'Alex Reed', avatar: '/avatars/demmo-avatar-x1.webp', initials: 'AR' };
 const teamMembers = [
     currentUser,
-    { id: 'user-2', name: 'Sarah M.', avatar: '../avatars/demmo-avatar-x2.webp', initials: 'SM' },
-    { id: 'user-3', name: 'Mike T.', avatar: '../avatars/demmo-avatar-x3.webp', initials: 'MT' },
+    { id: 'user-2', name: 'Sarah M.', avatar: '/avatars/demmo-avatar-x2.webp', initials: 'SM' },
+    { id: 'user-3', name: 'Mike T.', avatar: '/avatars/demmo-avatar-x3.webp', initials: 'MT' },
 ];
 
 // ===== DEMO DATA =====
 const tracks = [
-    { id: 1, status: 'new', track: 'Velvet Static', artist: 'Luna Ray', genre: 'Electronic', genreClass: 'genre-electronic', imprint: 'Colorize', date: 'Today', avatar: '../avatars/demmo-avatar-x1.webp', artwork: '../artwork/demmo-placeholder-artwork-1.jpeg', audio: '../audio/run-marc-v-remix.mp3', priority: true, submissions: 3, accepted: 1, firstSub: 'Jan 2026', lastSub: 'Feb 2026', followers: 84500, isOriginal: true, isRemix: false, isInstrumental: false, aiUsage: 'none', isExclusive: true, samplesCleared: true, socials: { spotify: 'https://open.spotify.com/artist/lunaray', instagram: 'https://instagram.com/lunaraymusic', youtube: 'https://youtube.com/@lunaray', soundcloud: 'https://soundcloud.com/lunaray' }, assignedTo: null, onboardingSent: false, notes: 'Strong vocal mix, could fit the spring playlist. Follow up with artist about stems.', email: 'luna@lunaraymusic.com', duration: '4:32', sampleRate: '44kHz', bitDepth: '24-bit', submittedTo: 'Colorize \u2014 Spring 2026 Playlist', releaseNotes: '' },
-    { id: 2, status: 'new', track: 'Slow Burn (Demo)', artist: 'NVDES', genre: 'Indie', genreClass: 'genre-indie', imprint: 'Enhanced Chill', date: 'Today', avatar: '../avatars/demmo-avatar-x2.webp', artwork: '../artwork/demmo-placeholder-artwork-2.jpeg', audio: '../audio/momentum-extended-mix.mp3', priority: false, submissions: 1, accepted: 0, firstSub: 'Feb 2026', lastSub: 'Feb 2026', followers: 259000, isOriginal: true, isRemix: false, isInstrumental: false, aiUsage: 'not_predominantly', isExclusive: false, samplesCleared: true, socials: { spotify: 'https://open.spotify.com/artist/nvdes', instagram: 'https://instagram.com/nvdes', youtube: 'https://youtube.com/@nvdes', soundcloud: 'https://soundcloud.com/nvdes' }, assignedTo: null, onboardingSent: false, notes: '', email: 'nvdes@nvdesmusic.com', duration: '3:48', sampleRate: '48kHz', bitDepth: '32-bit', submittedTo: null, releaseNotes: '' },
-    { id: 3, status: 'new', track: 'Glass Hours', artist: 'Pale Waves', genre: 'Pop', genreClass: 'genre-pop', imprint: 'Enhanced Recordings', date: 'Yesterday', avatar: '../avatars/demmo-avatar-x3.webp', artwork: '../artwork/demmo-placeholder-artwork-3.jpeg', audio: '../audio/chords-of-serenity.mp3', priority: false, submissions: 5, accepted: 2, firstSub: 'Nov 2025', lastSub: 'Feb 2026', followers: 1240000, isOriginal: true, isRemix: false, isInstrumental: false, aiUsage: 'none', isExclusive: true, samplesCleared: true, socials: { spotify: 'https://open.spotify.com/artist/palewaves', instagram: 'https://instagram.com/palewaves', youtube: 'https://youtube.com/@palewaves', soundcloud: 'https://soundcloud.com/palewaves' }, assignedTo: { id: 'user-2', name: 'Sarah M.', avatar: '../avatars/demmo-avatar-x2.webp', initials: 'SM' }, onboardingSent: false, notes: '', email: 'mgmt@palewaves.co.uk', duration: '5:12', sampleRate: '44kHz', bitDepth: '24-bit', submittedTo: 'Enhanced Recordings \u2014 New Singles', releaseNotes: '' },
-    { id: 4, status: 'new', track: 'Neon Undertow', artist: 'Soft Launch', genre: 'Electronic', genreClass: 'genre-electronic', imprint: 'Enhanced Progressive', date: 'Yesterday', avatar: '../avatars/demmo-avatar-x4.webp', artwork: '../artwork/demmo-placeholder-artwork-4.jpeg', audio: '../audio/daydreaming.mp3', priority: false, submissions: 2, accepted: 0, firstSub: 'Dec 2025', lastSub: 'Feb 2026', followers: 31200, isOriginal: false, isRemix: true, isInstrumental: true, aiUsage: 'none', isExclusive: false, samplesCleared: true, socials: { spotify: 'https://open.spotify.com/artist/softlaunch', instagram: 'https://instagram.com/softlaunchband', youtube: 'https://youtube.com/@softlaunch', soundcloud: 'https://soundcloud.com/softlaunch' }, assignedTo: null, onboardingSent: false, notes: '', email: 'hello@softlaunchmusic.com', duration: '6:15', sampleRate: '44kHz', bitDepth: '16-bit', submittedTo: 'Enhanced Progressive \u2014 Spring EP', releaseNotes: '' },
-    { id: 5, status: 'new', track: 'Hollow Season', artist: 'MUNA', genre: 'Pop', genreClass: 'genre-pop', imprint: 'Colorize', date: '2 days ago', avatar: '../avatars/demmo-avatar-x1.webp', artwork: '../artwork/demmo-placeholder-artwork-5.jpeg', audio: '../audio/machina.mp3', priority: false, submissions: 4, accepted: 1, firstSub: 'Oct 2025', lastSub: 'Feb 2026', followers: 612000, isOriginal: true, isRemix: false, isInstrumental: false, aiUsage: 'predominantly', isExclusive: true, samplesCleared: false, socials: { spotify: 'https://open.spotify.com/artist/muna', instagram: 'https://instagram.com/munatheband', youtube: 'https://youtube.com/@munatheband', soundcloud: 'https://soundcloud.com/munatheband' }, assignedTo: { id: 'user-3', name: 'Mike T.', avatar: '../avatars/demmo-avatar-x3.webp', initials: 'MT' }, onboardingSent: false, notes: 'Needs mastering work. Check AI usage claim \u2014 sounds human to me.', email: 'mgmt@muna.band', duration: '3:55', sampleRate: '44kHz', bitDepth: '24-bit', submittedTo: 'Colorize \u2014 Spring 2026 Playlist', releaseNotes: '' },
-    { id: 6, status: 'new', track: 'Drift (Unmastered)', artist: 'PREP', genre: 'R&B', genreClass: 'genre-rnb', imprint: 'Shapes of Solitude', date: '3 days ago', avatar: '../avatars/demmo-avatar-x2.webp', artwork: '../artwork/demmo-placeholder-artwork-6.jpeg', audio: '../audio/abyss-original-mix.mp3', priority: false, submissions: 1, accepted: 0, firstSub: 'Feb 2026', lastSub: 'Feb 2026', followers: 178000, isOriginal: true, isRemix: false, isInstrumental: false, aiUsage: 'none', isExclusive: false, samplesCleared: true, socials: { spotify: 'https://open.spotify.com/artist/prep', instagram: 'https://instagram.com/weareprepband', youtube: 'https://youtube.com/@prepband', soundcloud: 'https://soundcloud.com/weareprepband' }, assignedTo: null, onboardingSent: false, notes: '', email: 'info@weareprepband.com', duration: '7:37', sampleRate: '44kHz', bitDepth: '24-bit', submittedTo: null, releaseNotes: '' },
-    { id: 7, status: 'new', track: 'Pale Meridian', artist: 'Still Woozy', genre: 'Indie', genreClass: 'genre-indie', imprint: 'Enhanced Chill', date: '4 days ago', avatar: '../avatars/demmo-avatar-x3.webp', artwork: '../artwork/demmo-placeholder-artwork-7.jpeg', audio: '../audio/ambient-odyssey.mp3', priority: false, submissions: 7, accepted: 3, firstSub: 'Aug 2025', lastSub: 'Feb 2026', followers: 430000, isOriginal: false, isRemix: true, isInstrumental: false, aiUsage: 'not_predominantly', isExclusive: true, samplesCleared: true, socials: { spotify: 'https://open.spotify.com/artist/stillwoozy', instagram: 'https://instagram.com/stillwoozy', youtube: 'https://youtube.com/@stillwoozy', soundcloud: 'https://soundcloud.com/stillwoozy' }, assignedTo: null, onboardingSent: false, notes: '', email: 'sven@stillwoozy.com', duration: '5:48', sampleRate: '48kHz', bitDepth: '32-bit', submittedTo: 'Enhanced Chill \u2014 Ambient Series Vol. 3', releaseNotes: '' },
+    { id: 1, status: 'new', track: 'Velvet Static', artist: 'Luna Ray', genre: 'Electronic', genreClass: 'genre-electronic', imprint: 'Colorize', date: 'Today', avatar: '/avatars/demmo-avatar-x1.webp', artwork: '/artwork/demmo-placeholder-artwork-1.jpeg', audio: '/audio/run-marc-v-remix.mp3', priority: true, submissions: 3, accepted: 1, firstSub: 'Jan 2026', lastSub: 'Feb 2026', followers: 84500, isOriginal: true, isRemix: false, isInstrumental: false, aiUsage: 'none', isExclusive: true, samplesCleared: true, socials: { spotify: 'https://open.spotify.com/artist/lunaray', instagram: 'https://instagram.com/lunaraymusic', youtube: 'https://youtube.com/@lunaray', soundcloud: 'https://soundcloud.com/lunaray' }, assignedTo: null, onboardingSent: false, notes: 'Strong vocal mix, could fit the spring playlist. Follow up with artist about stems.', email: 'luna@lunaraymusic.com', duration: '4:32', sampleRate: '44kHz', bitDepth: '24-bit', submittedTo: 'Colorize \u2014 Spring 2026 Playlist', releaseNotes: '' },
+    { id: 2, status: 'new', track: 'Slow Burn (Demo)', artist: 'NVDES', genre: 'Indie', genreClass: 'genre-indie', imprint: 'Enhanced Chill', date: 'Today', avatar: '/avatars/demmo-avatar-x2.webp', artwork: '/artwork/demmo-placeholder-artwork-2.jpeg', audio: '/audio/momentum-extended-mix.mp3', priority: false, submissions: 1, accepted: 0, firstSub: 'Feb 2026', lastSub: 'Feb 2026', followers: 259000, isOriginal: true, isRemix: false, isInstrumental: false, aiUsage: 'not_predominantly', isExclusive: false, samplesCleared: true, socials: { spotify: 'https://open.spotify.com/artist/nvdes', instagram: 'https://instagram.com/nvdes', youtube: 'https://youtube.com/@nvdes', soundcloud: 'https://soundcloud.com/nvdes' }, assignedTo: null, onboardingSent: false, notes: '', email: 'nvdes@nvdesmusic.com', duration: '3:48', sampleRate: '48kHz', bitDepth: '32-bit', submittedTo: null, releaseNotes: '' },
+    { id: 3, status: 'new', track: 'Glass Hours', artist: 'Pale Waves', genre: 'Pop', genreClass: 'genre-pop', imprint: 'Enhanced Recordings', date: 'Yesterday', avatar: '/avatars/demmo-avatar-x3.webp', artwork: '/artwork/demmo-placeholder-artwork-3.jpeg', audio: '/audio/chords-of-serenity.mp3', priority: false, submissions: 5, accepted: 2, firstSub: 'Nov 2025', lastSub: 'Feb 2026', followers: 1240000, isOriginal: true, isRemix: false, isInstrumental: false, aiUsage: 'none', isExclusive: true, samplesCleared: true, socials: { spotify: 'https://open.spotify.com/artist/palewaves', instagram: 'https://instagram.com/palewaves', youtube: 'https://youtube.com/@palewaves', soundcloud: 'https://soundcloud.com/palewaves' }, assignedTo: { id: 'user-2', name: 'Sarah M.', avatar: '/avatars/demmo-avatar-x2.webp', initials: 'SM' }, onboardingSent: false, notes: '', email: 'mgmt@palewaves.co.uk', duration: '5:12', sampleRate: '44kHz', bitDepth: '24-bit', submittedTo: 'Enhanced Recordings \u2014 New Singles', releaseNotes: '' },
+    { id: 4, status: 'new', track: 'Neon Undertow', artist: 'Soft Launch', genre: 'Electronic', genreClass: 'genre-electronic', imprint: 'Enhanced Progressive', date: 'Yesterday', avatar: '/avatars/demmo-avatar-x4.webp', artwork: '/artwork/demmo-placeholder-artwork-4.jpeg', audio: '/audio/daydreaming.mp3', priority: false, submissions: 2, accepted: 0, firstSub: 'Dec 2025', lastSub: 'Feb 2026', followers: 31200, isOriginal: false, isRemix: true, isInstrumental: true, aiUsage: 'none', isExclusive: false, samplesCleared: true, socials: { spotify: 'https://open.spotify.com/artist/softlaunch', instagram: 'https://instagram.com/softlaunchband', youtube: 'https://youtube.com/@softlaunch', soundcloud: 'https://soundcloud.com/softlaunch' }, assignedTo: null, onboardingSent: false, notes: '', email: 'hello@softlaunchmusic.com', duration: '6:15', sampleRate: '44kHz', bitDepth: '16-bit', submittedTo: 'Enhanced Progressive \u2014 Spring EP', releaseNotes: '' },
+    { id: 5, status: 'new', track: 'Hollow Season', artist: 'MUNA', genre: 'Pop', genreClass: 'genre-pop', imprint: 'Colorize', date: '2 days ago', avatar: '/avatars/demmo-avatar-x1.webp', artwork: '/artwork/demmo-placeholder-artwork-5.jpeg', audio: '/audio/machina.mp3', priority: false, submissions: 4, accepted: 1, firstSub: 'Oct 2025', lastSub: 'Feb 2026', followers: 612000, isOriginal: true, isRemix: false, isInstrumental: false, aiUsage: 'predominantly', isExclusive: true, samplesCleared: false, socials: { spotify: 'https://open.spotify.com/artist/muna', instagram: 'https://instagram.com/munatheband', youtube: 'https://youtube.com/@munatheband', soundcloud: 'https://soundcloud.com/munatheband' }, assignedTo: { id: 'user-3', name: 'Mike T.', avatar: '/avatars/demmo-avatar-x3.webp', initials: 'MT' }, onboardingSent: false, notes: 'Needs mastering work. Check AI usage claim \u2014 sounds human to me.', email: 'mgmt@muna.band', duration: '3:55', sampleRate: '44kHz', bitDepth: '24-bit', submittedTo: 'Colorize \u2014 Spring 2026 Playlist', releaseNotes: '' },
+    { id: 6, status: 'new', track: 'Drift (Unmastered)', artist: 'PREP', genre: 'R&B', genreClass: 'genre-rnb', imprint: 'Shapes of Solitude', date: '3 days ago', avatar: '/avatars/demmo-avatar-x2.webp', artwork: '/artwork/demmo-placeholder-artwork-6.jpeg', audio: '/audio/abyss-original-mix.mp3', priority: false, submissions: 1, accepted: 0, firstSub: 'Feb 2026', lastSub: 'Feb 2026', followers: 178000, isOriginal: true, isRemix: false, isInstrumental: false, aiUsage: 'none', isExclusive: false, samplesCleared: true, socials: { spotify: 'https://open.spotify.com/artist/prep', instagram: 'https://instagram.com/weareprepband', youtube: 'https://youtube.com/@prepband', soundcloud: 'https://soundcloud.com/weareprepband' }, assignedTo: null, onboardingSent: false, notes: '', email: 'info@weareprepband.com', duration: '7:37', sampleRate: '44kHz', bitDepth: '24-bit', submittedTo: null, releaseNotes: '' },
+    { id: 7, status: 'new', track: 'Pale Meridian', artist: 'Still Woozy', genre: 'Indie', genreClass: 'genre-indie', imprint: 'Enhanced Chill', date: '4 days ago', avatar: '/avatars/demmo-avatar-x3.webp', artwork: '/artwork/demmo-placeholder-artwork-7.jpeg', audio: '/audio/ambient-odyssey.mp3', priority: false, submissions: 7, accepted: 3, firstSub: 'Aug 2025', lastSub: 'Feb 2026', followers: 430000, isOriginal: false, isRemix: true, isInstrumental: false, aiUsage: 'not_predominantly', isExclusive: true, samplesCleared: true, socials: { spotify: 'https://open.spotify.com/artist/stillwoozy', instagram: 'https://instagram.com/stillwoozy', youtube: 'https://youtube.com/@stillwoozy', soundcloud: 'https://soundcloud.com/stillwoozy' }, assignedTo: null, onboardingSent: false, notes: '', email: 'sven@stillwoozy.com', duration: '5:48', sampleRate: '48kHz', bitDepth: '32-bit', submittedTo: 'Enhanced Chill \u2014 Ambient Series Vol. 3', releaseNotes: '' },
 ];
 
 // ===== CONVERSATIONS DATA =====
@@ -86,43 +86,43 @@ let submissionsCollapsed = false;     // sidebar submissions parent collapsed st
 const releases = [
     {
         id: 'rel-1', trackId: 1, releaseName: 'Velvet Static', artistName: 'Luna Ray',
-        artwork: '../artwork/demmo-placeholder-artwork-1.jpeg', avatar: '../avatars/demmo-avatar-x1.webp',
+        artwork: '/artwork/demmo-placeholder-artwork-1.jpeg', avatar: '/avatars/demmo-avatar-x1.webp',
         imprint: 'Colorize', imprintSlug: 'colorize', date: '2026-02-20',
         status: 'requested', stepsComplete: 0, stepsTotal: 1, source: 'pipeline'
     },
     {
         id: 'rel-2', trackId: 3, releaseName: 'Glass Hours', artistName: 'Pale Waves',
-        artwork: '../artwork/demmo-placeholder-artwork-3.jpeg', avatar: '../avatars/demmo-avatar-x3.webp',
+        artwork: '/artwork/demmo-placeholder-artwork-3.jpeg', avatar: '/avatars/demmo-avatar-x3.webp',
         imprint: 'Enhanced Recordings', imprintSlug: 'enhanced-recordings', date: '2026-02-18',
         status: 'in_progress', stepsComplete: 3, stepsTotal: 4, source: 'pipeline'
     },
     {
         id: 'rel-3', trackId: null, releaseName: 'Midnight Frequencies EP', artistName: 'Kasper Koman',
-        artwork: '../artwork/demmo-placeholder-artwork-4.jpeg', avatar: '../avatars/demmo-avatar-x4.webp',
+        artwork: '/artwork/demmo-placeholder-artwork-4.jpeg', avatar: '/avatars/demmo-avatar-x4.webp',
         imprint: 'Enhanced Progressive', imprintSlug: 'enhanced-progressive', date: '2026-02-15',
         status: 'complete', stepsComplete: 1, stepsTotal: 1, source: 'external'
     },
     {
         id: 'rel-4', trackId: null, releaseName: 'Solace', artistName: 'Leaving Laurel',
-        artwork: '../artwork/demmo-placeholder-artwork-5.jpeg', avatar: '../avatars/demmo-avatar-x1.webp',
+        artwork: '/artwork/demmo-placeholder-artwork-5.jpeg', avatar: '/avatars/demmo-avatar-x1.webp',
         imprint: 'Enhanced Chill', imprintSlug: 'enhanced-chill', date: '2026-02-12',
         status: 'draft', stepsComplete: 0, stepsTotal: 0, source: 'external'
     },
     {
         id: 'rel-5', trackId: 5, releaseName: 'Hollow Season', artistName: 'MUNA',
-        artwork: '../artwork/demmo-placeholder-artwork-6.jpeg', avatar: '../avatars/demmo-avatar-x2.webp',
+        artwork: '/artwork/demmo-placeholder-artwork-6.jpeg', avatar: '/avatars/demmo-avatar-x2.webp',
         imprint: 'Colorize', imprintSlug: 'colorize', date: '2026-02-10',
         status: 'requested', stepsComplete: 1, stepsTotal: 3, source: 'pipeline'
     },
     {
         id: 'rel-6', trackId: null, releaseName: 'Drift Away', artistName: 'Marsh',
-        artwork: '../artwork/demmo-placeholder-artwork-2.jpeg', avatar: '../avatars/demmo-avatar-x3.webp',
+        artwork: '/artwork/demmo-placeholder-artwork-2.jpeg', avatar: '/avatars/demmo-avatar-x3.webp',
         imprint: 'Enhanced Progressive', imprintSlug: 'enhanced-progressive', date: '2026-01-28',
         status: 'complete', stepsComplete: 4, stepsTotal: 4, source: 'external'
     },
     {
         id: 'rel-7', trackId: null, releaseName: 'Echoes of Tomorrow', artistName: 'Ben Bohmer',
-        artwork: '../artwork/demmo-placeholder-artwork-7.jpeg', avatar: '../avatars/demmo-avatar-x4.webp',
+        artwork: '/artwork/demmo-placeholder-artwork-7.jpeg', avatar: '/avatars/demmo-avatar-x4.webp',
         imprint: 'Enhanced Chill', imprintSlug: 'enhanced-chill', date: '2025-12-15',
         status: 'archived', stepsComplete: 4, stepsTotal: 4, source: 'external'
     },
@@ -2028,12 +2028,12 @@ document.querySelectorAll('.col-header[data-sort]').forEach(col => {
 
 // ===== DASHBOARD FUNCTIONS =====
 const imprintImageMap = {
-    'all': '../label-images/enhanced-label-image.jpg',
-    'colorize': '../label-images/colorize-label-image.webp',
-    'enhanced-chill': '../label-images/enhanced-chill-label-image.jpg',
-    'enhanced-progressive': '../label-images/enhanced-progressive-label-image.jpg',
-    'enhanced-recordings': '../label-images/enhanced-recordings-label-image.webp',
-    'shapes-of-solitude': '../label-images/shapes-of-solitude-label-image.jpg',
+    'all': '/label-images/enhanced-label-image.jpg',
+    'colorize': '/label-images/colorize-label-image.webp',
+    'enhanced-chill': '/label-images/enhanced-chill-label-image.jpg',
+    'enhanced-progressive': '/label-images/enhanced-progressive-label-image.jpg',
+    'enhanced-recordings': '/label-images/enhanced-recordings-label-image.webp',
+    'shapes-of-solitude': '/label-images/shapes-of-solitude-label-image.jpg',
 };
 
 function computeDashboardData() {
